@@ -5,8 +5,12 @@ import {Router, Route, IndexRoute, browserHistory} from 'react-router'
 import App from './components/App.js'
 import IndexPage from './components/IndexPage.js'
 import LoginForm from './components/LoginForm.js'
+import WorkSpace from './containers/Workspace.js'
+import TaskArea from './components/TaskArea'
+import IssueArea from './components/IssueArea'
+import ManagementArea from './components/ManagementArea'
 
-const store = configureStore()
+export const store = configureStore() //bad, we dont export store. But in this case we just export for automation
 
 export default class Root extends React.Component {
 	render() {
@@ -16,9 +20,17 @@ export default class Root extends React.Component {
 				<Route path="/" component={App}>
 					<IndexRoute component={IndexPage}></IndexRoute>
 					<Route path="/login" component={LoginForm}></Route>
-					
+					<Route path="/workspace" component={WorkSpace}>
+						<Route path="task" component={TaskArea}></Route>
+						<Route path="issue" component={IssueArea}></Route>
+						<Route path="management" component={ManagementArea}></Route>
+					</Route>
 				</Route>
 			</Router>
 			</Provider>)
 	}
 }
+
+/* Automation script */
+import {automateLogin} from './automatescript/automateLogin'
+automateLogin("hruser");

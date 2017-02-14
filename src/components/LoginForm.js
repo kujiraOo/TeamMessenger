@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Panel, Button, FormControl, FormGroup, HelpBlock} from 'react-bootstrap'
-import {fetchLoginData, } from '../actions/loginActions'
+import {fetchLoginData, } from '../actions/actions'
 import {connect} from 'react-redux'
 import  loadingimg from '../img/loading.svg'
 

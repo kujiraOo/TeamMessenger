@@ -1,4 +1,4 @@
-import '../actions/loginActions.js'
+import '../actions/actions.js'
 import {combineReducers} from 'redux'
 
 function authentication(state, action) {

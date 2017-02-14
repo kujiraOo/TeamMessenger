@@ -4,7 +4,7 @@ import {Panel, Button, FormControl, FormGroup, HelpBlock, ControlLabel} from 're
 import LoginForm from './LoginForm.js'
 import {connect} from 'react-redux'
 import 'whatwg-fetch'
-import {fetchLoginData} from '../actions/loginActions'
+import {fetchLoginData} from '../actions/actions'
 
 const Login = ({dispatch}) => {
 	console.log(onSubmission)

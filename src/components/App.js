@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
-import '../actions/loginActions.js'
+//import '../actions/loginActions.js'
 
 class App extends Component {
 	constructor(props) {
