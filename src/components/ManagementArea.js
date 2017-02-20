@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {redirect} from '../actions/actions'
+import {redirect} from '../actions/helper'
 
 class ManagementArea extends React.Component {
 	constructor(props) {

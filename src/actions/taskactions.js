@@ -1,5 +1,5 @@
 import 'whatwg-fetch'
-import {requestOperation, responseFromServer, respondToRequest} from 'helper'
+import {requestOperation, responseFromServer, responseToRequest} from './helper'
 //tasks related actions
 	//task retrieval actions
 /*function requestTasks(userId) { //actually we dont need this shit
@@ -56,7 +56,7 @@ export function fetchTaskDetail(taskId, userId) {
 			headers: {
 				'Content-Type': 'application/json',
 				'authorization': userId.toString()
-			}}
+			}
 		})
 		.then((res)=>{
 			dispatch(responseFromServer(req, res.status));

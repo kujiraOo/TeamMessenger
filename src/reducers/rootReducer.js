@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux'
-import '../actions/actions.js'
+import '../actions/index.js'
 
 function authentication(state, action) {
 	state = state || {

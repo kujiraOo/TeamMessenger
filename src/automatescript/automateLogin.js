@@ -1,8 +1,8 @@
 import {store} from '../Root.js' //not standard practise
-import * as actions from '../actions/actions'
+import actions from '../actions/index'
 
 export function automateLogin(username) {
 console.log('***** Login automation is in effect ********\n********** Account used: hruser *********')
 //begin dispatching action
-store.dispatch(actions.fetchLoginData({username: username}));
+store.dispatch(actions.loginActions.fetchLoginData({username: username}));
 }

@@ -1,5 +1,5 @@
 import 'whatwg-fetch'
-import {requestOperation, responseFromServer, respondToRequest} from 'helper'
+import {requestOperation, responseFromServer, responseToRequest} from './helper'
 
 /*function requestIssues(userId, groupId) {
 	return {
@@ -32,7 +32,7 @@ export function fetchIssues(userId, groupId) {
 			dispatch(responseFromServer(req, res.status))
 			return res.json
 		})
-		.then(json => dispatch(respondToRequest(req, json)))
+		.then(json => dispatch(responseToRequest(req, json)))
 		.catch(err => console.log(err))
 	}
 }
@@ -63,7 +63,7 @@ export function fetchIssueDetail(issueId, userId) {
 			}
 		})
 		.then((res) => {dispatch(responseFromServer(req, res.status))})
-		.then(json => {dispatch(respondToRequest(req, json))})
+		.then(json => {dispatch(responseToRequest(req, json))})
 		.catch(err => {console.log(`Error while fetching issue ${issueId}`)})
 	}
 }
@@ -89,7 +89,7 @@ export function postIssue(userId, issue) {
 			body: JSON.Stringify(issue)
 		})
 		.then((res) => {dispatch(responseFromServer(req, res.status)); return res.json})
-		.then((json) => {dispatch(respondToRequest(req, json))})
+		.then((json) => {dispatch(responseToRequest(req, json))})
 		.catch(err => {console.log(`Error while posting new issue to server`)})
 	}
 }
@@ -116,7 +116,7 @@ export function modifyIssue(userId, issueId, issue) {
 			body: JSON.Stringify(issue)
 		})
 		.then((res) => {dispatch(responseFromServer(req, res.status)); return res.json})
-		.then(json => dispatch(respondToRequest(req, json)))
+		.then(json => dispatch(responseToRequest(req, json)))
 		.catch(err => console.log(`Error while trying to modify issue ${issueId} to server`))
 	}
 }
@@ -143,7 +143,7 @@ export function handleIssue(userId, issueId) {
 			body: {"status" : "HANDLED"}
 		})
 		.then((res) => {dispatch(responseFromServer(req, res.status)); return res.json})
-		.then(json => dispatch(respondToRequest(req, json)))
+		.then(json => dispatch(responseToRequest(req, json)))
 		.catch(err => console.log(`Error while trying to handle issue ${issueId} to server`))
 	}
 } //handleIssue

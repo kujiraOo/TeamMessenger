@@ -7,8 +7,6 @@ const state = {
 		isFetching
 		responseFromServer
 		loggedin
-	}
-	userInfo: {
 		isHR,
 		id,
 		userName,
@@ -17,10 +15,10 @@ const state = {
 		subGroups: [],
 		superGroups: []
 	}
-	tasklist: {
+	tasks: {
 		isFetching
 		isStale
-		tasks: [{
+		data: [{
 			id,
 			status,
 			title,
@@ -36,10 +34,10 @@ const state = {
 			}
 		}]
 	}
-	issueList: {
+	issues: {
 		isFetching
 		isStale
-		issues: [
+		data: [
 		{
 			id,
 			status,
@@ -54,8 +52,10 @@ const state = {
 			}
 		}]
 	}
-	management: {
-		userList: {
+	users: {
+		isFetching,
+		isStale,
+		data: {
 			isFetching,
 			isStale,
 			users: [
@@ -78,7 +78,53 @@ const state = {
 			superGroups: []
 			detailed
 		}],
-			isFetching,
-			isStale
+	}
+	filter: [{
+		target,
+		flag: [{type, value}]
+	}]
+	groups: 
+	[
+	{
+		"users": [
+		{
+			"id": 69,
+			"userName": "bobchen",
+			"firstName": "Bob",
+			"lastName": "Chen"
+		}
+		],
+		"superGroup": {
+			"id": 69,
+			"name": "cashiers"
+		},
+		"subGroups": [
+		{
+			"id": 69,
+			"name": "cashiers"
+		}
+		],
+		"id": 69,
+		"name": "cashiers"
+	}
+	]
+}
+export const todos = createReducer([], {
+  [ActionTypes.ADD_TODO](state, action) {
+    let text = action.text.trim()
+    return [ ...state, text ]
+  }
+})
+function createReducer(initialState, handlers) {
+	return (state = initialState, action) => {
+		if (handlers.hasOwnProperty(action.type)) //if the set of reducers can handle the action, handle it
+			return handlers[action.type](state,action)
+		return state //else just do nothing!
 	}
 }
+//handlers look like this
+{
+	ADD_TODO: addtodo(state, action)
+	REMOVE_TODO: removetodo(state, action)
+}
+//=> handlers[ADD_TODO] == addtodo

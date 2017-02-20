@@ -1,7 +1,7 @@
-import * as loginActions from 'loginactions'
-import * as issueActions from 'issueactions'
-import * as taskActions from 'taskactions'
-import * as managementActions from 'hrmanageractions'
+import * as loginActions from './loginactions'
+import * as issueActions from './issueactions'
+import * as taskActions from './taskactions'
+import * as managementActions from './hrmanageractions'
 
 const actions = {
 	loginActions,
@@ -41,3 +41,4 @@ List of actions in management actions:
 		createUser(hruserId, user)
 		function modifyUser(hruserId, userId, user)
 		banUser(hruserId, userId)
+*/

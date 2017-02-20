@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react'
 import {Navbar,Nav, NavItem} from 'react-bootstrap'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
-import {redirect} from '../actions/actions'
+import {redirect} from '../actions/index'
 class Sidebar extends Component{
 	constructor(props) {
 		super(props)

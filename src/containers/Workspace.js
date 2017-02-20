@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {redirect} from '../actions/actions'
+import {redirect} from '../actions/helper'
 import Sidebar from '../components/Sidebar.js'
 
 class Workspace extends React.Component{

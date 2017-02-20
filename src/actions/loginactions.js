@@ -1,5 +1,5 @@
 import 'whatwg-fetch'
-import {redirect} from 'helper'
+import {redirect, responseFromServer} from './helper'
 //login actions
  function sendAuthenticationInfo(loginInfo) { //action decribing user hitting enter
 	return {

@@ -1,5 +1,5 @@
 import 'whatwg-fetch'
-import {requestOperation, responseFromServer, respondToRequest} from 'helper'
+import {requestOperation, responseFromServer, respondToRequest} from './helper'
 //group modification for hr actions
 	//get groups info
 /*function requestGroupsInfo() {
@@ -82,7 +82,6 @@ export function createGroup(hruserid, groupName) {
 	return (dispatch) => {
 		let req = requestOperation('CREATE_GROUP', {hruserid, groupName})
 		dispatch(req)
-		(dispatch(createGroup(groupInfo)))
 		fetch(`./api/groups`, {
 			method: 'POST',
 			header: {
@@ -97,6 +96,7 @@ export function createGroup(hruserid, groupName) {
 		})
 		.then(json => dispatch(respondToRequest(req, json)))
 		.catch(err => console.log(err))
+	}
 }
 /*function modifyGroup(modifiedGroup) {
 	return {
@@ -130,7 +130,7 @@ function modifyGroup(hruserid, groupId, group) {
 			header: {
 				'Content-Type' : 'application/json',
 				'authorization' : hruserid.toString()
-			}
+			},
 			body: JSON.Stringify(group)
 		})
 		.then(res => {dispatch(responseFromServer(req, res.status)); return res.json})
@@ -250,7 +250,6 @@ export function fetchUserDetail(hruserid, userId) {
 		.then(json => dispatch(respondToRequest(req, json)))
 		.catch(err => console.log(err))
 	}
- 	}
  }
 	//modify users
 /*function modifyUser(userId, user) {
