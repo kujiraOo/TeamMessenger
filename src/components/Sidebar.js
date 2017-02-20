@@ -14,13 +14,13 @@ class Sidebar extends Component{
 	}
 	render() {
 
-		return (this.props.isHr) ? (
-			<Nav pullLeft={true} stacked onSelect={this.handleNavigation}>
+		return (this.props.isHr) ? 
+			(<Nav pullLeft={true} bsStyle="pills" stacked={true} onSelect={this.handleNavigation}>
 				<NavItem eventKey="task">Task Viewer</NavItem>
 				<NavItem eventKey="issue">Issue Viewer</NavItem>
 				<NavItem eventKey="management">HR Management</NavItem>
 			</Nav>
-			) : (<Nav pullLeft={true} stacked onSelect={this.handleNavigation}>
+			) : (<Nav pullLeft={true} stacked={true} onSelect={this.handleNavigation}>
 				<NavItem eventKey="task">Task Viewer</NavItem>
 				<NavItem eventKey="issue">Issue Viewer</NavItem>
 			</Nav>)

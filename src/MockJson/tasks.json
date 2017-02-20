@@ -1,0 +1,32 @@
+{
+  "tasks": [
+    {
+      "id": 69,
+      "status": "DONE",
+      "title": "Have fun",
+      "sender": {
+        "id": 69,
+        "userName": "bobchen",
+        "firstName": "Bob",
+        "lastName": "Chen"
+      },
+      "senderGroup": {
+        "id": 69,
+        "name": "cashiers"
+      },
+      "targetUsers": [
+        {
+          "id": 69,
+          "userName": "bobchen",
+          "firstName": "Bob",
+          "lastName": "Chen"
+        }
+      ],
+      "targetGroup": {
+        "id": 69,
+        "name": "cashiers"
+      },
+      "deadline": "1994-11-05T08:15:30+02:00"
+    }
+  ]
+}

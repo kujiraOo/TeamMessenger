@@ -1,6 +1,9 @@
 import React from 'react'
+import TaskList from './TaskList'
 export default class TaskArea extends React.Component {
 	render() {
-		return (<h1>This is task area</h1>)
+		return (<div>
+			<TaskList />
+		</div>)
 	}
 }
