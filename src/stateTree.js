@@ -109,22 +109,97 @@ const state = {
 	}
 	]
 }
-export const todos = createReducer([], {
-  [ActionTypes.ADD_TODO](state, action) {
-    let text = action.text.trim()
-    return [ ...state, text ]
-  }
-})
-function createReducer(initialState, handlers) {
-	return (state = initialState, action) => {
-		if (handlers.hasOwnProperty(action.type)) //if the set of reducers can handle the action, handle it
-			return handlers[action.type](state,action)
-		return state //else just do nothing!
+
+const normalizedTree = {
+	authentication: {
+		isFetching
+		responseFromServer
+		loggedin
+		isHR,
+		id,
+		userName,
+		firstName,
+		lastName,
+		subGroups: [id1, id2, id3, id4],
+		superGroups: [id1, id2, id3, id4]
+	}
+	entities: {
+		tasks: {
+			isFetching: false,
+			isStale: false,
+			byId: {
+				'1' : {
+					id: '1',
+					status: 'COMPLETED',
+					title: 'task number 1',
+					content: 'Yo whatsup this is the first task right?',
+					sender: senderId,
+					senderGroup: senderGroupId,
+					targetUsers: [userid, userid2, userid3, ...therest],
+					targetGroup: targetGroupId,
+					deadline: date,
+					detailed: true
+				}
+			}
+			allIds: ['1']
+		}
+		issues: {
+			isFetching: false,
+			isState: false,
+			byId: {
+				'1': {
+					id: '1',
+					status: 'HANDLED',
+					sender: senderId,
+					senderGroup: groupId,
+					targetGroup: groupId,
+					title: 'some title'
+					content: 'some content'
+					detailed: false
+				}
+				//other issues
+			}
+			allIds: ['1']
+		}
+		groups: {
+			isFetching: false,
+			isState: false,
+			byId: {
+				'1': {
+					id: '1',
+					name: 'group1',
+					users: [userid1, userid2, userid 3]
+					subGroups: [groupid1, groupid2]
+					superGroups: [groupid1]
+					detailed: true
+				}
+				//someother items
+				allIds: [id, id, id, id]
+			}
+		}
+		users: {
+			isFetching: false,
+			isStale: false,
+			byId: {
+				69: {
+					id: 69,
+					phoneNumber: "1234567",
+					streetAddress: "Somestreet 6 C 66",
+					city: "Pompeii",
+					postalCode: "02230",
+					email: "example@example.com",
+					status: "HR_MANAGER",
+					userName: "bobchen",
+					firstName: "Bob",
+					lastName: "Chen",
+					managerGroups: [groupid1, groupid2],
+					groups: [groupid1, groupid2],
+					subordinateGroups: [groupid1, groupid2]
+					detailed: true,
+				}
+				//some other user
+			}
+			allIds: [id1, id2, id3, id4, ...rest]
+		}
 	}
 }
-//handlers look like this
-{
-	ADD_TODO: addtodo(state, action)
-	REMOVE_TODO: removetodo(state, action)
-}
-//=> handlers[ADD_TODO] == addtodo

@@ -27,5 +27,5 @@ class Workspace extends React.Component{
 	}
 }
 
-const mapStatesToProps = (state) => ({loggedin: state.authentication.loggedin, firstName: state.userInfo.firstName, lastName: state.userInfo.lastName})
+const mapStatesToProps = (state) => ({loggedin: state.authentication.loggedin, firstName: state.authentication.firstName, lastName: state.authentication.lastName})
 export default connect(mapStatesToProps)(Workspace)

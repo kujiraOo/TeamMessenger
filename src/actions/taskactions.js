@@ -1,5 +1,5 @@
 import 'whatwg-fetch'
-import {requestOperation, responseFromServer, responseToRequest} from './helper'
+import {requestOperation, responseFromServer, responseToRequest, checkStatus} from './helper'
 //tasks related actions
 	//task retrieval actions
 /*function requestTasks(userId) { //actually we dont need this shit
@@ -26,7 +26,9 @@ export function fetchTasks(userId) { //thunk to call api to fetch task list
 				'Content-Type': 'application/json',
 				'authorization': userId.toString()
 			}})
-		.then(res => {dispatch(responseFromServer(req, res.status));
+		.then(res => {
+			dispatch(responseFromServer(req, res.status))
+			checkStatus(res, req)
 			return res.json})
 		.then(json => dispatch(responseToRequest(req, json)))
 		.catch(err => console.log(err))
@@ -59,8 +61,10 @@ export function fetchTaskDetail(taskId, userId) {
 			}
 		})
 		.then((res)=>{
-			dispatch(responseFromServer(req, res.status));
-			return res.json})
+			dispatch(responseFromServer(req, res.status))
+			checkStatus(res, req)
+			return res.json
+		})
 		.then((json)=> {dispatch(responseToRequest(req, json))})
 		.catch(err => console.log(err))
 	}
@@ -86,6 +90,7 @@ export function postTask(userId, task) {
 		})
 		.then(res => {
 			dispatch(responseFromServer(req, res.status))
+			checkStatus(res, req)
 			return res.json
 		})
 		.then(json => dispatch(responseToRequest(req, json)))
@@ -115,7 +120,11 @@ export function modifyTask(userId, taskId, task) {
 			},
 			body: JSON.Stringify(task)
 		})
-		.then((res) => {dispatch(responseFromServer(req, res.status)); return res.json})
+		.then((res) => {
+			dispatch(responseFromServer(req, res.status))
+			checkStatus(res, req)
+			return res.json
+		})
 		.then((json) => {dispatch(responseToRequest(req, json))})
 		.catch((error) => console.log('Error while putting modified task to server: ' + error))
 	}
@@ -132,7 +141,11 @@ export function completeTask(userId, taskId) {
 			},
 			body: JSON.Stringify({"status" : "DONE"})
 		})
-		.then((res) => {dispatch(responseFromServer(req, res.status)); return res.json})
+		.then((res) => {
+			dispatch(responseFromServer(req, res.status))
+			checkStatus(res, req)
+			return res.json
+		})
 		.then((json) => {dispatch(responseToRequest(req, json))})
 		.catch((error) => console.log('Error while putting completed task to server: ' + error))
 	}
@@ -158,7 +171,11 @@ function deleteTask(taskId, userId) {
 				'authorization': userId.toString()
 			}
 		})
-		.then((res) => {dispatch(responseFromServer(req, res.status))}) //reducer will use this code to deal with task appropriately
+		.then((res) => {
+			dispatch(responseFromServer(req, res.status)) //reducer will use this code to deal with task appropriately
+			checkStatus(res, req)
+			}) 
+		.then(dispatch(responseToRequest(req)))
 		.catch((error) => console.log(`Error while requesting task ${taskId} to server: ` + error))
 	}
 }
