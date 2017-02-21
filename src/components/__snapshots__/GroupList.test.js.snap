@@ -1,0 +1,10 @@
+exports[`Component: GroupList renders a snapshot 1`] = `
+<ul>
+  <li>
+    cashiers
+  </li>
+  <li>
+    storage
+  </li>
+</ul>
+`;
