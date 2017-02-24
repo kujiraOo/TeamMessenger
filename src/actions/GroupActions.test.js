@@ -1,7 +1,7 @@
 import * as actions from './GroupActions'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import * as types from '../constants/GroupActionsTypes'
+import * as types from '../constants/ActionTypes'
 import fetchMock from 'fetch-mock'
 
 const middlewares = [ thunk ]
@@ -20,7 +20,7 @@ describe('GroupActions', () => {
                 {type: types.FETCH_GROUP_ITEMS_SUCCESS}
             ]
 
-            const store = mockStore({ todos: [] })
+            const store = mockStore({ ok : [] })
 
             store.dispatch(actions.fetchGroupItems())
                 .then(() => {

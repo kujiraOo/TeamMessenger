@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, {PropTypes} from 'react'
 import {Provider} from 'react-redux'
 import configureStore from './configureStore.js'
@@ -9,6 +11,7 @@ import WorkSpace from './containers/Workspace.js'
 import TaskArea from './components/TaskArea'
 import IssueArea from './components/IssueArea'
 import ManagementArea from './components/ManagementArea'
+import GroupList from './containers/GroupList'
 
 export const store = configureStore() //bad, we dont export store. But in this case we just export for automation
 
@@ -25,6 +28,10 @@ export default class Root extends React.Component {
 						<Route path="issue" component={IssueArea}></Route>
 						<Route path="management" component={ManagementArea}></Route>
 					</Route>
+					{/*Route for testing stuff*/}
+					<Route path="/playground" component={GroupList}>
+
+					</Route>
 				</Route>
 			</Router>
 			</Provider>)
@@ -32,5 +39,3 @@ export default class Root extends React.Component {
 }
 
 /* Automation script */
-import {automateLogin} from './automatescript/automateLogin'
-automateLogin("hruser");

@@ -1,4 +1,4 @@
-import * as types from '../constants/GroupActionsTypes'
+import * as types from '../constants/ActionTypes'
 import 'whatwg-fetch'
 
 function fetchGroupItemsRequest() {
@@ -25,7 +25,13 @@ export function fetchGroupItems() {
 
     return dispatch => {
         dispatch(fetchGroupItemsRequest())
-        return fetch('/api/groups', {method: 'GET'})
+        return fetch('/api/groups', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': 1
+            }
+        })
             .then(res => res.json())
             .then(json => dispatch(fetchGroupItemsSuccess(json.body)))
             .catch(ex => dispatch(fetchGroupItemsFailure(ex)))

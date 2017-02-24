@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux'
 import '../actions/index.js'
+import groups from './groups'
 
 function authentication(state, action) {
 	state = state || {
@@ -34,5 +35,5 @@ function task(state = {}, action) {
 		default: return state
 	}
 }
-const rootReducer = combineReducers({authentication, userInfo});
+const rootReducer = combineReducers({authentication, userInfo, groups});
 export default rootReducer;
