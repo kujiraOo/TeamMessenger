@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react'
 import {Navbar,Nav, NavItem} from 'react-bootstrap'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
-import {redirect} from '../actions/index'
+import {redirect} from '../actions/helper'
 class Sidebar extends Component{
 	constructor(props) {
 		super(props)
@@ -28,7 +28,7 @@ class Sidebar extends Component{
 }
 const mapStateToProps = (state) => {
 	return {
-		isHr: state.userInfo.isHR
+		isHr: state.authentication.isHR
 	}
 }
 export default connect(mapStateToProps)(Sidebar)

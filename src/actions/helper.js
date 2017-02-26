@@ -6,17 +6,19 @@ export function requestOperation(type, payload) {
 		payload
 	}
 }
-export function responseFromServer(action, status) { //action describing server sends response to authentication
+export function responseFromServer(action, status) { //action describing server sends response to authentication, optionally taking 1 additional arguments
 	return {
 		type: `SERVER_RESPONSE_TO_${action.type}`,
 		payload: {
-			response: status
+			response: status,
+			extra: arguments[2]
 		}
 	}
 }
 export function responseToRequest(req, data) {
 	return {
 		type: `RECEIVE_${req.type}`,
+		request: req.payload,
 		payload: data
 	}
 }
@@ -33,5 +35,17 @@ export function redirect(url) {
 	return (dispatch) => {
 		dispatch(redirection(url));
 		browserHistory.push(url);
+	}
+}
+
+export function checkStatus(response, requestAction) {
+  	if (response.status >= 200 && response.status < 300) return
+    var error = new Error(`Failed to perform operation ${requestAction.type}`)
+    error.response = response
+    throw error
+}
+export function resolved(request) {
+	return {
+		type: `RESOLVED_${request.type}`
 	}
 }

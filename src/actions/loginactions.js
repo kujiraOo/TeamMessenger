@@ -1,5 +1,5 @@
 import 'whatwg-fetch'
-import {redirect, responseFromServer} from './helper'
+import {redirect, responseFromServer, responseToRequest, requestOperation, checkStatus} from './helper'
 //login actions
  function sendAuthenticationInfo(loginInfo) { //action decribing user hitting enter
 	return {
@@ -19,8 +19,10 @@ import {redirect, responseFromServer} from './helper'
 }
 
 export function fetchLoginData(loginInfo) { //action when dispatched will also call apis
+	let {username} = loginInfo;
 	return (dispatch)=> {
-		let req = sendAuthenticationInfo(loginInfo)
+		//let req = sendAuthenticationInfo(loginInfo)
+		let req = requestOperation('AUTHENTICATION_INFO', loginInfo)
 		dispatch(req)
 		return fetch('http://localhost:3000/api/auth', {
 			method: 'GET',
@@ -31,11 +33,12 @@ export function fetchLoginData(loginInfo) { //action when dispatched will also c
 		})
 		.then((response )=>{
 			dispatch(responseFromServer(req, response.status))
+			checkStatus(response, req)
 			return response.json()})
 		.then((json) => {
-			dispatch(receivedAuthenticationData(json))
+			dispatch(responseToRequest(req, json))
 			dispatch(redirect('/workspace'))
 		})
-		.catch((error) => {console.log('There was a problem fetching user data')});
+		.catch((error) => {console.log(error)});
 	}
 }

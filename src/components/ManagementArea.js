@@ -15,7 +15,7 @@ class ManagementArea extends React.Component {
 }
 const mapStateToProp = (state) => {
 	return {
-		isHr: state.userInfo.isHR
+		isHr: state.authentication.isHR
 	}
 }
 export default connect(mapStateToProp)(ManagementArea)
