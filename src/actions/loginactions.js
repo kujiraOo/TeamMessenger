@@ -1,7 +1,7 @@
-import 'whatwg-fetch'
+import fetch from 'isomorphic-fetch'
 import {redirect, responseFromServer, responseToRequest, requestOperation, checkStatus} from './helper'
 //login actions
- function sendAuthenticationInfo(loginInfo) { //action decribing user hitting enter
+ /*function sendAuthenticationInfo(loginInfo) { //action decribing user hitting enter
 	return {
 		type: 'SEND_AUTHENTICATION_INFO',
 		payload: {
@@ -17,9 +17,8 @@ import {redirect, responseFromServer, responseToRequest, requestOperation, check
 		payload: data
 	}
 }
-
+*/
 export function fetchLoginData(loginInfo) { //action when dispatched will also call apis
-	let {username} = loginInfo;
 	return (dispatch)=> {
 		//let req = sendAuthenticationInfo(loginInfo)
 		let req = requestOperation('AUTHENTICATION_INFO', loginInfo)
@@ -36,7 +35,7 @@ export function fetchLoginData(loginInfo) { //action when dispatched will also c
 			checkStatus(response, req)
 			return response.json()})
 		.then((json) => {
-			dispatch(responseToRequest(req, json))
+			dispatch(responseToRequest(req, json.body))
 			dispatch(redirect('/workspace'))
 		})
 		.catch((error) => {console.log(error)});

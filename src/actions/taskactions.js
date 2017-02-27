@@ -1,4 +1,4 @@
-import 'whatwg-fetch'
+import fetch from 'isomorphic-fetch'
 import {requestOperation, responseFromServer, responseToRequest, checkStatus} from './helper'
 //tasks related actions
 	//task retrieval actions
@@ -20,7 +20,7 @@ export function fetchTasks(userId) { //thunk to call api to fetch task list
 	return (dispatch) => {
 		let req = requestOperation('TASKS', {userId})
 		dispatch(req);
-		fetch(`./api/tasks`, {
+		return fetch('http://localhost:3000/api/tasks', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -29,8 +29,8 @@ export function fetchTasks(userId) { //thunk to call api to fetch task list
 		.then(res => {
 			dispatch(responseFromServer(req, res.status))
 			checkStatus(res, req)
-			return res.json})
-		.then(json => dispatch(responseToRequest(req, json)))
+			return res.json()})
+		.then(json => dispatch(responseToRequest(req, json.body)))
 		.catch(err => console.log(err))
 	}
 }
@@ -48,11 +48,11 @@ export function fetchTasks(userId) { //thunk to call api to fetch task list
 		payload: data
 	}
 }*/
-export function fetchTaskDetail(taskId, userId) {
+export function fetchTaskDetail(id, userId) {
 	return (dispatch) => {
-		let req = requestOperation('TASK_DETAIL', {taskId, userId})
+		let req = requestOperation('TASK_DETAIL', {id, userId})
 		dispatch(req)
-		fetch(`./api/tasks/${taskId}`,
+		return fetch(`http://localhost:3000/api/tasks/${id}`,
 		{
 			method: 'GET',
 			headers: {
@@ -63,9 +63,9 @@ export function fetchTaskDetail(taskId, userId) {
 		.then((res)=>{
 			dispatch(responseFromServer(req, res.status))
 			checkStatus(res, req)
-			return res.json
+			return res.json()
 		})
-		.then((json)=> {dispatch(responseToRequest(req, json))})
+		.then((json)=> {dispatch(responseToRequest(req, json.body))})
 		.catch(err => console.log(err))
 	}
 }
@@ -76,24 +76,24 @@ export function fetchTaskDetail(taskId, userId) {
 		payload: data
 	}
 }*/ //action called to notify that a task is posted. 
-export function postTask(userId, task) {
+export function postTask(userId, entity) {
 	return (dispatch) => {
-		let req = requestOperation('POST_TASK', {userId, task})
+		let req = requestOperation('POST_TASK', {userId, entity})
 		dispatch(req)
-		fetch('./api/tasks', {
+		return fetch('http://localhost:3000/api/tasks', {
 			method: 'POST',
 			header: {
 				'Content-Type': 'application/json',
-				'authorization' : userId
+				'authorization' : userId.toString()
 			},
-			body: JSON.Stringify(task)
+			body: JSON.stringify({task: entity})
 		})
-		.then(res => {
+		.then((res)=>{
 			dispatch(responseFromServer(req, res.status))
 			checkStatus(res, req)
-			return res.json
+			return res.json()
 		})
-		.then(json => dispatch(responseToRequest(req, json)))
+		.then((json)=> {dispatch(responseToRequest(req, json.body))})
 		.catch(err => console.log(err))
 	}
 } //thunk to actually post the task to server
@@ -108,46 +108,45 @@ export function postTask(userId, task) {
 	}
 } //action called to modify a task
 */
-export function modifyTask(userId, taskId, task) {
+export function modifyTask(userId, id, entity) {
 	return (dispatch) => {
-		let req = requestOperation('MODIFY_TASK', {userId, taskId, change: task})
+		let req = requestOperation('MODIFY_TASK', {userId, id, entity})
 		dispatch(req);
-		fetch(`./api/tasks/${taskId}`, {
+		return fetch(`http://localhost:3000/api/tasks/${id}`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
 				'authorization': userId.toString()
 			},
-			body: JSON.Stringify(task)
+			body: JSON.stringify({task: entity})
 		})
 		.then((res) => {
 			dispatch(responseFromServer(req, res.status))
 			checkStatus(res, req)
-			return res.json
+			return res.json()	
 		})
-		.then((json) => {dispatch(responseToRequest(req, json))})
-		.catch((error) => console.log('Error while putting modified task to server: ' + error))
+		.then((json) => {dispatch(responseToRequest(req, json.body))})
+		.catch((error) => console.log(error.message))
 	}
 }
-export function completeTask(userId, taskId) {
+export function completeTask(userId, id) {
 	return (dispatch) => {
-		let req = requestOperation('COMPLETE_TASK', {userId, taskId})
+		let req = requestOperation('COMPLETE_TASK', {userId, id})
 		dispatch(req);
-		fetch(`./api/tasks/${taskId}`, {
+		return fetch(`http://localhost:3000/api/tasks/${id}`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
 				'authorization': userId.toString()
 			},
-			body: JSON.Stringify({"status" : "DONE"})
+			body: JSON.stringify({"status" : "DONE"})
 		})
 		.then((res) => {
 			dispatch(responseFromServer(req, res.status))
 			checkStatus(res, req)
-			return res.json
-		})
-		.then((json) => {dispatch(responseToRequest(req, json))})
-		.catch((error) => console.log('Error while putting completed task to server: ' + error))
+			return res.json()	})
+		.then((json) => {dispatch(responseToRequest(req, json.body))})
+		.catch((error) => console.log(error))
 	}
 }
 
@@ -160,11 +159,11 @@ export function completeTask(userId, taskId) {
 		}
 	}
 }*/
-function deleteTask(taskId, userId) {
+export function deleteTask(userId, id) {
 	return (dispatch) => {
-		let req = requestOperation('DELETE_TASK', {userId, taskId})
-		dispatch(deleteTask(taskId))
-		fetch(`./api/tasks/${taskId}`, {
+		let req = requestOperation('DELETE_TASK', {userId, id})
+		dispatch(req)
+		return fetch(`http://localhost:3000/api/tasks/${id}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
@@ -172,10 +171,10 @@ function deleteTask(taskId, userId) {
 			}
 		})
 		.then((res) => {
-			dispatch(responseFromServer(req, res.status)) //reducer will use this code to deal with task appropriately
+			dispatch(responseFromServer(req, res.status))
 			checkStatus(res, req)
 			}) 
-		.then(dispatch(responseToRequest(req)))
-		.catch((error) => console.log(`Error while requesting task ${taskId} to server: ` + error))
+		.then(()=> dispatch(responseToRequest(req)))
+		.catch((error) => console.log(error.message))
 	}
 }

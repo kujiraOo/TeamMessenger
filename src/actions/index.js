@@ -1,13 +1,13 @@
 import * as loginActions from './loginactions'
 import * as issueActions from './issueactions'
 import * as taskActions from './taskactions'
-import * as managementActions from './hrmanageractions'
+import * as groupanduseraction from './groupanduseraction'
 
 const actions = {
 	loginActions,
 	issueActions,
 	taskActions,
-	managementActions
+	groupanduseraction
 }
 export default actions
 
