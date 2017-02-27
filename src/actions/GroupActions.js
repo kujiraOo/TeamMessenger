@@ -1,5 +1,8 @@
 import * as types from '../constants/ActionTypes'
 import 'whatwg-fetch'
+import {schema, normalize} from 'normalizr'
+
+const groupSchema = new schema.Entity('groups')
 
 function fetchGroupItemsRequest() {
     return {
@@ -7,10 +10,11 @@ function fetchGroupItemsRequest() {
     }
 }
 
-function fetchGroupItemsSuccess(body) {
+
+function fetchGroupItemsSuccess(groups) {
     return {
         type: types.FETCH_GROUP_ITEMS_SUCCESS,
-        body
+        groups
     }
 }
 
@@ -33,7 +37,10 @@ export function fetchGroupItems() {
             }
         })
             .then(res => res.json())
-            .then(json => dispatch(fetchGroupItemsSuccess(json.body)))
+            .then(json => {
+                const data = normalize(json.groups, [groupSchema])
+                dispatch(fetchGroupItemsSuccess(data.entities.groups))
+            })
             .catch(ex => dispatch(fetchGroupItemsFailure(ex)))
     }
 }

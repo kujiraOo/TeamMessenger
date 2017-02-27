@@ -11,7 +11,7 @@ const groupItems = (state = initialState.byId, action) => {
         case FETCH_GROUP_ITEMS_SUCCESS:
             return {
                 ...state,
-                ...action.groupItems
+                ...action.groups
             }
         default:
             return state

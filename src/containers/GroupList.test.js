@@ -15,7 +15,7 @@ describe('Component: GroupList', () => {
             }
         }
 
-        const tree = renderer.create(<GroupList groups={mockGroups}/>).toJSON();
+        const tree = renderer.create(<GroupList groups={mockGroups} dispatch={() => {}}/>).toJSON();
         expect(tree).toMatchSnapshot();
     });
 })
