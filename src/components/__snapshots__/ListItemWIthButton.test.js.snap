@@ -1,0 +1,10 @@
+exports[`Component: ListItemWithButton renders a snapshot 1`] = `
+<li>
+  Bob
+   
+  <button
+    onClick={[Function]}>
+    remove
+  </button>
+</li>
+`;

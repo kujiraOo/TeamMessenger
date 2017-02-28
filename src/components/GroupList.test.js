@@ -1,5 +1,5 @@
 import React from 'react'
-import {GroupList} from './GroupList'
+import GroupList from './GroupList'
 import renderer from 'react-test-renderer'
 
 describe('Component: GroupList', () => {

@@ -1,7 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import GroupList from './GroupList'
+import GroupList from '../components/GroupList'
 import GroupListFilter from '../components/GroupListFilter'
+import GroupDetails from '../components/GroupDetails'
 import {fetchGroupItems, filterGroupsByName, displayGroupDetails} from '../actions/GroupActions'
 
 
@@ -45,9 +46,6 @@ export class GroupManagement extends React.Component {
         const groups = this.props.groups
         const selectedGroupDetails = this.props.selectedGroupDetails
 
-        // Turn store.groups into map
-        const groupList = Object.values(groups).map(groupItem => groupItem)
-
         return (
             <div>
                 <GroupListFilter
@@ -61,11 +59,7 @@ export class GroupManagement extends React.Component {
                         this.onGroupItemSelected(groupId)
                     }}
                 />
-                { selectedGroupDetails &&
-                <div>
-                    {groups[selectedGroupDetails].name}
-                </div>
-                }
+                {selectedGroupDetails && <GroupDetails/>}
             </div>
         )
     }

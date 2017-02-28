@@ -1,4 +1,3 @@
-import {combineReducers} from 'redux'
 import {UPDATE_GROUPS, SET_GROUPS_BY_NAME_FILTER, SELECT_GROUP_DETAILS} from '../constants/ActionTypes'
 
 const initialState = {
@@ -7,7 +6,7 @@ const initialState = {
     selectedGroupDetails: null
 }
 
-const groupItems = (state = initialState.byId, action) => {
+const byId = (state = initialState.byId, action) => {
 
     switch (action.type) {
         case UPDATE_GROUPS:
@@ -44,7 +43,7 @@ function groups (state = initialState, action) {
     switch (action.type) {
         default:
             return {
-                byId: groupItems(state.byId, action),
+                byId: byId(state.byId, action),
                 groupsByNameFilter: groupsByNameFilter(state.groupsByNameFilter, action),
                 selectedGroupDetails: selectGroupDetails(state.selectedGroupDetails, action)
             }

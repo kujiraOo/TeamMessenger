@@ -86,6 +86,7 @@ describe('GroupActions', () => {
             const expectedActions = [
                 {type: 'FETCH_GROUP_DETAILS_REQUEST'},
                 {type: 'UPDATE_GROUPS', groups: normalize(mockGroupDetailsData, schemas.group).entities.groups},
+                {type: 'UPDATE_USERS', users: normalize(mockGroupDetailsData, schemas.group).entities.users},
                 {type: 'SELECT_GROUP_DETAILS', groupId: 1}
             ]
 

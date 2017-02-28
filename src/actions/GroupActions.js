@@ -1,4 +1,5 @@
 import * as types from '../constants/ActionTypes'
+import {updateUsers} from './UserActions'
 import 'whatwg-fetch'
 import {normalize} from 'normalizr'
 import {group as groupSchema} from '../api/shemas'
@@ -39,7 +40,7 @@ export function fetchGroupItems() {
 
     return dispatch => {
         dispatch(fetchGroupItemsRequest())
-        return fetch('/api/groups', {
+        return fetch('/groups', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -48,7 +49,7 @@ export function fetchGroupItems() {
         })
             .then(res => res.json())
             .then(json => {
-                const data = normalize(json.groups, [groupSchema])
+                const data = normalize(json, [groupSchema])
                 dispatch(updateGroups(data.entities.groups))
             })
             .catch(ex => dispatch(fetchGroupItemsFailure(ex)))
@@ -72,7 +73,7 @@ export function selectGroupDetails(groupId) {
 export function displayGroupDetails(groupId) {
     return dispatch => {
         dispatch(fetchGroupDetailsRequest())
-        return fetch(`/api/groups/${groupId}`, {
+        return fetch(`/groups/${groupId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -83,7 +84,27 @@ export function displayGroupDetails(groupId) {
             .then(json => {
                 const data = normalize(json, groupSchema)
                 dispatch(updateGroups(data.entities.groups))
+                dispatch(updateUsers(data.entities.users))
                 dispatch(selectGroupDetails(groupId))
+            })
+            .catch(ex => dispatch(fetchGroupItemsFailure(ex)))
+    }
+}
+
+export function modifyGroup(modifiedGroup) {
+
+    return dispatch => {
+        return fetch(`/groups/${modifiedGroup.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': 1
+            },
+            body: JSON.stringify(modifiedGroup)
+
+    })
+            .then(json => {
+                dispatch(displayGroupDetails(modifiedGroup.id))
             })
             .catch(ex => dispatch(fetchGroupItemsFailure(ex)))
     }
