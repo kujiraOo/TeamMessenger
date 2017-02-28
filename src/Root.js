@@ -11,7 +11,7 @@ import WorkSpace from './containers/Workspace.js'
 import TaskArea from './components/TaskArea'
 import IssueArea from './components/IssueArea'
 import ManagementArea from './components/ManagementArea'
-import GroupList from './containers/GroupList'
+import GroupManagement from './containers/GroupManagement'
 
 export const store = configureStore() //bad, we dont export store. But in this case we just export for automation
 
@@ -29,7 +29,7 @@ export default class Root extends React.Component {
 						<Route path="management" component={ManagementArea}></Route>
 					</Route>
 					{/*Route for testing stuff*/}
-					<Route path="/playground" component={GroupList}>
+					<Route path="/playground" component={GroupManagement}>
 
 					</Route>
 				</Route>

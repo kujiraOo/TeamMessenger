@@ -1,21 +1,23 @@
 import React from 'react'
-import { GroupList } from './GroupList'
+import {GroupList} from './GroupList'
 import renderer from 'react-test-renderer'
 
 describe('Component: GroupList', () => {
 
     it('renders a snapshot', () => {
 
-        const mockGroups = {
-            1: {
+        const mockGroupList = [
+            {
+                id: 1,
                 name: 'cashiers'
             },
-            2: {
+            {
+                id: 2,
                 name: 'storage'
             }
-        }
+        ]
 
-        const tree = renderer.create(<GroupList groups={mockGroups} dispatch={() => {}}/>).toJSON();
+        const tree = renderer.create(<GroupList groupList={mockGroupList}/>).toJSON();
         expect(tree).toMatchSnapshot();
     });
 })

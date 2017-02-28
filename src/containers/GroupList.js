@@ -1,8 +1,5 @@
-import GroupItem from '../components/GroupItem'
 import React from 'react'
-import {connect} from 'react-redux'
-import {fetchGroupItems} from '../actions/GroupActions'
-
+import GroupItem from '../components/GroupItem'
 
 export class GroupList extends React.Component {
 
@@ -10,28 +7,25 @@ export class GroupList extends React.Component {
         super(props)
     }
 
-    componentDidMount() {
-        const {dispatch} = this.props
-        dispatch(fetchGroupItems())
+    handleGroupItemClick(groupId) {
+        this.props.onGroupItemSelected(groupId)
     }
 
     render() {
-
-        const groups = this.props.groups
-
-        // Turn store.groups into map
-        const groupList = Object.keys(groups).map((id) => <GroupItem key={id} name={groups[id].name}/>)
+        const groupList = this.props.groupList
 
         return (
             <ul>
-                {groupList}
+                {groupList.map(groupItem =>
+                    <GroupItem
+                        onClick={(groupId) => {this.handleGroupItemClick(groupId)}}
+                        key={groupItem.id}
+                        id={groupItem.id}
+                        name={groupItem.name}/>
+                )}
             </ul>
         )
     }
 }
 
-const mapStatesToProps = state => ({
-    groups: state.groups.byId
-})
-
-export default connect(mapStatesToProps)(GroupList)
+export default GroupList

@@ -1,10 +1,18 @@
 exports[`Component: GroupList renders a snapshot 1`] = `
 <ul>
   <li>
-    cashiers
+    <a
+      href="#"
+      onClick={[Function]}>
+      cashiers
+    </a>
   </li>
   <li>
-    storage
+    <a
+      href="#"
+      onClick={[Function]}>
+      storage
+    </a>
   </li>
 </ul>
 `;

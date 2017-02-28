@@ -1,5 +1,9 @@
 exports[`Component: GroupItem renders a snapshot 1`] = `
 <li>
-  Cashiers
+  <a
+    href="#"
+    onClick={[Function]}>
+    Cashiers
+  </a>
 </li>
 `;
