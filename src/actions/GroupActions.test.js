@@ -34,18 +34,17 @@ describe('GroupActions', () => {
         "name": "cashier leaders"
     }
 
-    const mockGroupItemsData = {
-        groups: [
-            {"id": 1, "name": "management"},
-            {"id": 2, "name": "storage leaders"},
-            {"id": 3, "name": "cashier leaders"},
-            {"id": 4, "name": "cashiers"},
-            {"id": 5, "name": "storage"}
-        ]
-    }
+    const mockGroupItemsData = [
+        {"id": 1, "name": "management"},
+        {"id": 2, "name": "storage leaders"},
+        {"id": 3, "name": "cashier leaders"},
+        {"id": 4, "name": "cashiers"},
+        {"id": 5, "name": "storage"}
+    ]
 
-    fetchMock.get('/api/groups', mockGroupItemsData)
-    fetchMock.get('/api/groups/1', mockGroupDetailsData)
+
+    fetchMock.get('/groups', mockGroupItemsData)
+    fetchMock.get('/groups/1', mockGroupDetailsData)
 
     describe('fetchGroupItems', () => {
 
@@ -55,7 +54,7 @@ describe('GroupActions', () => {
                 {type: types.FETCH_GROUP_ITEMS_REQUEST},
                 {
                     type: types.UPDATE_GROUPS,
-                    groups: normalize(mockGroupItemsData.groups, [schemas.group]).entities.groups
+                    groups: normalize(mockGroupItemsData, [schemas.group]).entities.groups
                 }
             ]
 
