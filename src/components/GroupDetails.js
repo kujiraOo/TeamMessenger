@@ -12,6 +12,7 @@ class GroupDetails extends React.Component {
         super(props)
 
         this.state = {...props}
+        this.props.dispatch(fetchUserItems())
     }
 
     componentWillReceiveProps(nextProps) {
@@ -37,10 +38,45 @@ class GroupDetails extends React.Component {
         dispatch(modifyGroup(group))
     }
 
+    addSubordinateGroup(groupId) {
+        const dispatch = this.props.dispatch
+        let group = this.state.group
+
+        group = {...group, subordinateGroups: _.union(group.users, [groupId])}
+
+        this.setState({isUserModalOpen: false})
+        dispatch(modifyGroup(group))
+    }
+
+    removeSubordinateGroup(groupId) {
+        const dispatch = this.props.dispatch
+        let group = this.state.group
+
+        group = {...group, subordinateGroups: _.without(group.subordinateGroups, groupId)}
+
+        dispatch(modifyGroup(group))
+    }
+
+    changeManagerGroup(groupId) {
+        const dispatch = this.props.dispatch
+        let group = this.state.group
+
+        group = {...group, managerGroup: groupId}
+
+        dispatch(modifyGroup(group))
+        this.toggleChangeManagerGroupModal()
+    }
+
     openAddUserModal() {
-        const {dispatch} = this.props
         this.setState({isUserModalOpen: true})
-        dispatch(fetchUserItems())
+    }
+
+    toggleAddSubordinateGroupModal() {
+        this.setState({isSubordinateGroupModalOpen: !this.state.isSubordinateGroupModalOpen})
+    }
+
+    toggleChangeManagerGroupModal() {
+        this.setState({isChangeManagerGroupModalOpen: !this.state.isChangeManagerGroupModalOpen})
     }
 
     renderUsersToAddList() {
@@ -87,9 +123,81 @@ class GroupDetails extends React.Component {
         }
     }
 
+    renderManagerGroup() {
+        const group = this.state.group
+        const managerGroup = this.state.groups[group.managerGroup]
+
+        if (managerGroup) {
+            return (
+                <span>{managerGroup.name}</span>
+            )
+        }
+    }
+
+    renderSubordinateGroups() {
+
+        const subordinateGroupIds = this.state.group.subordinateGroups
+        const groups = this.state.groups
+
+        if (subordinateGroupIds) {
+            return subordinateGroupIds.map(groupId => {
+                const group = groups[groupId]
+                return (
+                    <ul>
+                        <ListItemWithButton key={groupId}
+                                            itemText={group.name}
+                                            buttonText="remove"
+                                            onButtonClick={() => {
+                                                this.removeSubordinateGroup(groupId)
+                                            }}/>
+                    </ul>
+                )
+            })
+        }
+    }
+
+    renderSubordinateGroupCandidates() {
+        const groups = this.state.groups
+
+        return Object.keys(groups).map(groupId => {
+            const group = groups[groupId]
+            return (
+                <ul>
+                    <ListItemWithButton key={groupId}
+                                        itemText={group.name}
+                                        buttonText="add"
+                                        onButtonClick={() => {
+                                            this.addSubordinateGroup(groupId)
+                                        }}/>
+                </ul>
+            )
+        })
+    }
+
+    renderManagerGroupCandidates() {
+        const groups = this.state.groups
+
+        return Object.keys(groups).map(groupId => {
+            const group = groups[groupId]
+            return (
+                <ul>
+                    <ListItemWithButton key={groupId}
+                                        itemText={group.name}
+                                        buttonText="choose"
+                                        onButtonClick={() => {
+                                            this.changeManagerGroup(groupId)
+                                        }}/>
+                </ul>
+            )
+        })
+    }
+
     render() {
 
         const group = this.state.group
+
+        const isAddSubordinateGroupModalOpen = this.state.isSubordinateGroupModalOpen
+        const isChangeManagerGroupModalOpen = this.state.isChangeManagerGroupModalOpen
 
         return (
             <div>
@@ -113,6 +221,28 @@ class GroupDetails extends React.Component {
                     <h3>Add user modal</h3>
                     {this.renderUsersToAddList()}
                 </div>}
+
+                <h4>Manager Group</h4>
+
+                {this.renderManagerGroup()}
+
+                <button onClick={() => {
+                    this.toggleChangeManagerGroupModal()
+                }}>Change manager group
+                </button>
+
+                {isChangeManagerGroupModalOpen && this.renderManagerGroupCandidates()}
+
+                <h4>Subordinate Groups</h4>
+
+                {this.renderSubordinateGroups()}
+
+                <button onClick={() => {
+                    this.toggleAddSubordinateGroupModal()
+                }}>Add subordinate group
+                </button>
+
+                {isAddSubordinateGroupModalOpen && this.renderSubordinateGroupCandidates()}
             </div>
         )
     }
@@ -120,6 +250,7 @@ class GroupDetails extends React.Component {
 
 const mapStatesToProps = state => ({
     group: state.groups.byId[state.groups.selectedGroupDetails],
+    groups: state.groups.byId,
     users: state.users.byId
 })
 
