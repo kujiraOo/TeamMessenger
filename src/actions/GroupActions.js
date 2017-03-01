@@ -102,10 +102,29 @@ export function modifyGroup(modifiedGroup) {
             },
             body: JSON.stringify(modifiedGroup)
 
-    })
-            .then(json => {
+        })
+            .then(() => {
                 dispatch(displayGroupDetails(modifiedGroup.id))
             })
             .catch(ex => dispatch(fetchGroupItemsFailure(ex)))
+    }
+}
+
+export function createGroup(groupName) {
+
+    return dispatch => {
+        return fetch(`/groups`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': 1
+            },
+            body: JSON.stringify({name: groupName})
+        })
+            .then(res => res.json())
+            .then(groupData => {
+                const normalizedGroupData = normalize(groupData, groupSchema)
+                dispatch(updateGroups(normalizedGroupData.entities.groups))
+            })
     }
 }

@@ -1,15 +1,20 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import GroupList from '../../components/group/GroupList'
+import GroupCreationForm from './GroupCreationForm'
 import GroupListFilter from '../../components/group/GroupListFilter'
 import GroupDetails from './GroupDetails'
-import {fetchGroupItems, filterGroupsByName, displayGroupDetails} from '../../actions/GroupActions'
+import {fetchGroupItems, filterGroupsByName, displayGroupDetails, selectGroupDetails} from '../../actions/GroupActions'
 
 
 export class GroupManagement extends React.Component {
 
     constructor(props) {
         super(props)
+
+        this.state = {
+            selectedCreateNewGroup: false
+        }
     }
 
     updateGroupsByNameFilter(e) {
@@ -28,6 +33,13 @@ export class GroupManagement extends React.Component {
         dispatch(displayGroupDetails(groupId))
     }
 
+    onCreateNewGroupSelected(e) {
+        e.preventDefault()
+        const {dispatch} = this.props
+        dispatch(selectGroupDetails(null))
+        this.setState({selectedCreateNewGroup: true})
+    }
+
     visibleGroups() {
         const groups = this.props.groups
         const filterValue = this.props.groupsByNameFilter
@@ -43,8 +55,8 @@ export class GroupManagement extends React.Component {
 
     render() {
 
-        const groups = this.props.groups
-        const selectedGroupDetails = this.props.selectedGroupDetails
+        const {selectedGroupDetails} = this.props
+        const {selectedCreateNewGroup} = this.state
 
         return (
             <div>
@@ -59,7 +71,11 @@ export class GroupManagement extends React.Component {
                         this.onGroupItemSelected(groupId)
                     }}
                 />
+                <hr/>
+                <a href="#" onClick={(e) => {this.onCreateNewGroupSelected(e)}} >Create new group</a>
+                <hr/>
                 {selectedGroupDetails && <GroupDetails/>}
+                {selectedCreateNewGroup && <GroupCreationForm/>}
             </div>
         )
     }

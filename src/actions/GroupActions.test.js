@@ -45,6 +45,7 @@ describe('GroupActions', () => {
 
     fetchMock.get('/groups', mockGroupItemsData)
     fetchMock.get('/groups/1', mockGroupDetailsData)
+    fetchMock.post('/groups', mockGroupDetailsData)
 
     describe('fetchGroupItems', () => {
 
@@ -92,6 +93,22 @@ describe('GroupActions', () => {
             const store = mockStore({})
 
             store.dispatch(actions.displayGroupDetails(1))
+                .then(() => {
+                    expect(store.getActions()).toEqual(expectedActions)
+                })
+        })
+    })
+
+    describe('createGroup', () => {
+
+        it('should create new group on the backend and update store', () => {
+            const expectedActions = [
+                {type: 'UPDATE_GROUPS', groups: normalize(mockGroupDetailsData, schemas.group).entities.groups},
+            ]
+
+            const store = mockStore({})
+
+            store.dispatch(actions.createGroup())
                 .then(() => {
                     expect(store.getActions()).toEqual(expectedActions)
                 })
