@@ -6,6 +6,7 @@
   "devDependencies": {
     "fetch-mock": "^5.9.4",
     "nock": "^9.0.6",
+    "react-bootstrap": "^0.30.7",
     "react-scripts": "0.8.5",
     "react-test-renderer": "^15.4.2",
     "redux-mock-store": "^1.2.2"
