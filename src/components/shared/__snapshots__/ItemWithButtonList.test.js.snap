@@ -1,0 +1,25 @@
+exports[`Component: ListItemWithButton renders a snapshot 1`] = `
+<ul>
+  <li>
+    ok
+    <button
+      onClick={[Function]}>
+      ok
+    </button>
+  </li>
+  <li>
+    pvp
+    <button
+      onClick={[Function]}>
+      ok
+    </button>
+  </li>
+  <li>
+    lol
+    <button
+      onClick={[Function]}>
+      ok
+    </button>
+  </li>
+</ul>
+`;

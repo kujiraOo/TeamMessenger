@@ -11,7 +11,7 @@ import WorkSpace from './containers/Workspace.js'
 import TaskArea from './components/TaskArea'
 import IssueArea from './components/IssueArea'
 import ManagementArea from './components/ManagementArea'
-import GroupManagement from './containers/GroupManagement'
+import GroupManagement from './containers/group/GroupManagement'
 
 export const store = configureStore() //bad, we dont export store. But in this case we just export for automation
 

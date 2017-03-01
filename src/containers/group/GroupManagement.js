@@ -1,9 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import GroupList from '../components/GroupList'
-import GroupListFilter from '../components/GroupListFilter'
-import GroupDetails from '../components/GroupDetails'
-import {fetchGroupItems, filterGroupsByName, displayGroupDetails} from '../actions/GroupActions'
+import GroupList from '../../components/group/GroupList'
+import GroupListFilter from '../../components/group/GroupListFilter'
+import GroupDetails from './GroupDetails'
+import {fetchGroupItems, filterGroupsByName, displayGroupDetails} from '../../actions/GroupActions'
 
 
 export class GroupManagement extends React.Component {
