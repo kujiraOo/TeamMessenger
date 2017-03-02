@@ -1,5 +1,9 @@
+body,
+html {
+    height: 100%;
+    width: 100%;
+}
 body {
-  margin-top: 50px;
-  padding: 50px;
-  font-family: sans-serif;
+    font-family: Merriweather, 'Helvetica Neue', Arial, sans-serif;
+    webkit-tap-highlight-color: #222
 }
