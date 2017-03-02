@@ -5,6 +5,10 @@ import {normalize} from 'normalizr'
 import {group as groupSchema} from '../api/shemas'
 import {store} from '../Root'
 
+function getLoggedInUserId() {
+    return store.getState().authentication.id
+}
+
 function fetchGroupItemsRequest() {
     return {
         type: types.FETCH_GROUP_ITEMS_REQUEST
@@ -45,7 +49,7 @@ export function fetchGroupItems() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': 1
+                'Authorization': getLoggedInUserId()
             }
         })
             .then(res => res.json())
@@ -80,7 +84,7 @@ export function displayGroupDetails(groupId) {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': 1
+                'Authorization': getLoggedInUserId()
             }
         })
             .then(res => res.json())
@@ -101,7 +105,7 @@ export function modifyGroup(modifiedGroup) {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': 1
+                'Authorization': getLoggedInUserId()
             },
             body: JSON.stringify(modifiedGroup)
 
@@ -120,7 +124,7 @@ export function createGroup(groupName) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': 1
+                'Authorization': getLoggedInUserId()
             },
             body: JSON.stringify({name: groupName})
         })
