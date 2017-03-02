@@ -1,10 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import GroupList from '../../components/group/GroupList'
+import ClickableItemList from '../../components/shared/ClickableItemList'
 import GroupCreationForm from './GroupCreationForm'
-import GroupListFilter from '../../components/group/GroupListFilter'
 import GroupDetails from './GroupDetails'
-import {fetchGroupItems, filterGroupsByName, displayGroupDetails, selectGroupDetails} from '../../actions/GroupActions'
+import {fetchGroupItems, displayGroupDetails, selectGroupDetails} from '../../actions/GroupActions'
 
 
 export class GroupManagement extends React.Component {
@@ -13,14 +12,15 @@ export class GroupManagement extends React.Component {
         super(props)
 
         this.state = {
-            selectedCreateNewGroup: false
+            selectedCreateNewGroup: false,
+            groupByNameFilterValue: ''
         }
     }
 
     updateGroupsByNameFilter(e) {
-        const {dispatch} = this.props
-        const filterValue = e.target.value
-        dispatch(filterGroupsByName(filterValue))
+        this.setState({
+            groupByNameFilterValue: e.target.value
+        })
     }
 
     componentDidMount() {
@@ -31,6 +31,7 @@ export class GroupManagement extends React.Component {
     onGroupItemSelected(groupId) {
         const {dispatch} = this.props
         dispatch(displayGroupDetails(groupId))
+        this.setState({selectedCreateNewGroup: false})
     }
 
     onCreateNewGroupSelected(e) {
@@ -41,12 +42,12 @@ export class GroupManagement extends React.Component {
     }
 
     visibleGroups() {
-        const groups = this.props.groups
-        const filterValue = this.props.groupsByNameFilter
+        const {groups} = this.props
+        const {groupByNameFilterValue} = this.state
         const result = []
 
         Object.values(groups).forEach(groupItem => {
-            if (groupItem.name.includes(filterValue))
+            if (groupItem.name.includes(groupByNameFilterValue))
                 result.push(groupItem)
         })
 
@@ -59,23 +60,24 @@ export class GroupManagement extends React.Component {
         const {selectedCreateNewGroup} = this.state
 
         return (
-            <div>
-                <GroupListFilter
-                    onChange={(e) => {
-                        this.updateGroupsByNameFilter(e)
-                    }}
-                />
-                <GroupList
-                    groupList={this.visibleGroups()}
-                    onGroupItemSelected={groupId => {
-                        this.onGroupItemSelected(groupId)
-                    }}
-                />
-                <hr/>
-                <a href="#" onClick={(e) => {this.onCreateNewGroupSelected(e)}} >Create new group</a>
-                <hr/>
-                {selectedGroupDetails && <GroupDetails/>}
-                {selectedCreateNewGroup && <GroupCreationForm/>}
+            <div className="row">
+                <div className="col-sm-2">
+                    search:
+                    <input onChange={(e) => {this.updateGroupsByNameFilter(e)}}/>
+                    <ClickableItemList
+                        itemList={this.visibleGroups()}
+                        onItemSelected={groupId => {
+                            this.onGroupItemSelected(groupId)
+                        }}
+                    />
+                    <a onClick={(e) => {
+                        this.onCreateNewGroupSelected(e)
+                    }}>Create new group</a>
+                </div>
+                <div className="col-sm-10">
+                    {selectedGroupDetails && <GroupDetails/>}
+                    {selectedCreateNewGroup && <GroupCreationForm/>}
+                </div>
             </div>
         )
     }
@@ -83,7 +85,6 @@ export class GroupManagement extends React.Component {
 
 const mapStatesToProps = state => ({
     groups: state.groups.byId,
-    groupsByNameFilter: state.groups.groupsByNameFilter,
     selectedGroupDetails: state.groups.selectedGroupDetails
 })
 

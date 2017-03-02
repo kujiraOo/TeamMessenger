@@ -3,6 +3,7 @@ import {updateUsers} from './UserActions'
 import 'whatwg-fetch'
 import {normalize} from 'normalizr'
 import {group as groupSchema} from '../api/shemas'
+import {store} from '../Root'
 
 function fetchGroupItemsRequest() {
     return {
@@ -29,7 +30,7 @@ function fetchGroupDetailsRequest() {
     }
 }
 
-function updateGroups(groups) {
+export function updateGroups(groups) {
     return {
         type: types.UPDATE_GROUPS,
         groups
@@ -73,6 +74,8 @@ export function selectGroupDetails(groupId) {
 export function displayGroupDetails(groupId) {
     return dispatch => {
         dispatch(fetchGroupDetailsRequest())
+
+        console.log(store.getState())
         return fetch(`/groups/${groupId}`, {
             method: 'GET',
             headers: {

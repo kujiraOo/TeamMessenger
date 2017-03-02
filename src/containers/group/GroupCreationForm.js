@@ -1,5 +1,5 @@
 import React from 'react'
-import createGroup from '../../actions/GroupActions'
+import {createGroup} from '../../actions/GroupActions'
 import {connect} from 'react-redux'
 
 

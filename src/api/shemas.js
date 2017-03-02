@@ -10,4 +10,8 @@ group.define({
     subordinateGroups: [group]
 })
 
+user.define({
+    groups: [group]
+})
+
 export const groupList = [group]

@@ -23,7 +23,7 @@ export function fetchLoginData(loginInfo) { //action when dispatched will also c
 		//let req = sendAuthenticationInfo(loginInfo)
 		let req = requestOperation('AUTHENTICATION_INFO', loginInfo)
 		dispatch(req)
-		return fetch('http://localhost:3000/api/auth', {
+		return fetch('http://localhost:3000/auth', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -34,8 +34,8 @@ export function fetchLoginData(loginInfo) { //action when dispatched will also c
 			dispatch(responseFromServer(req, response.status))
 			checkStatus(response, req)
 			return response.json()})
-		.then((json) => {
-			dispatch(responseToRequest(req, json.body))
+		.then((authData) => {
+			dispatch(responseToRequest(req, authData))
 			dispatch(redirect('/workspace'))
 		})
 		.catch((error) => {console.log(error)});

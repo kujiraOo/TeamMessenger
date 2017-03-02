@@ -1,15 +1,15 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import ManagementArea from '../shared/ManagementArea'
-import GroupManagement from './GroupManagement'
+import UserManagement from './UserManagement'
 
-class GroupManagementArea extends ManagementArea {
+class UserManagementArea extends ManagementArea {
     constructor(props) {
         super(props)
     }
 
     render() {
-        return (<GroupManagement/>)
+        return (<UserManagement/>)
     }
 }
 const mapStateToProp = (state) => {
@@ -17,4 +17,4 @@ const mapStateToProp = (state) => {
         userStatus: state.authentication.status
     }
 }
-export default connect(mapStateToProp)(GroupManagementArea)
+export default connect(mapStateToProp)(UserManagementArea)
