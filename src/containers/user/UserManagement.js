@@ -4,6 +4,7 @@ import {fetchUserItems, displayUserDetails, selectUserDetails} from '../../actio
 import ClickableItemList from '../../components/shared/ClickableItemList'
 import UserDetails from './UserDetails'
 import UserCreationForm from './UserCreationForm'
+import {Panel, FormControl, ListGroupItem} from 'react-bootstrap'
 
 class UserManagement extends React.Component {
     constructor(props) {
@@ -61,20 +62,31 @@ class UserManagement extends React.Component {
 
         return (
             <div className="row">
-                <div className="col-sm-2">
-                    search:
-                    <input onChange={(e) => {this.updateUserByNameFilter(e)}}/>
+                <Panel className="col-sm-2">
+                    <FormControl
+                        type="text"
+                        placeholder='User search'
+                        onChange={(e) => {
+                            this.updateUserByNameFilter(e)
+                        }}
+                    />
+                    <br/>
                     <ClickableItemList
                         itemList={this.visibleUsers()}
                         onItemSelected={(userId) => {
                             this.onUserItemSelected(userId)
                         }}
                     />
-                    <a onClick={(e) => {
-                        this.onCreateNewUserSelected(e)
-                    }}>Add new user</a>
-                </div>
-                <div className="col-sm-10">
+                    <ListGroupItem
+                        onClick={(e) => {
+                            this.onCreateNewUserSelected(e)
+                        }}>
+                        Add new user
+                    </ListGroupItem>
+
+                </Panel>
+                <div className="col-sm-1"></div>
+                <div className="col-sm-7">
                     {selectedUserDetails && <UserDetails/>}
                     {selectedCreateNewUser && <UserCreationForm/>}
                 </div>

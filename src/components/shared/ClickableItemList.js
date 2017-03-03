@@ -1,23 +1,24 @@
 import React from 'react'
+import {ListGroupItem, ListGroup} from 'react-bootstrap'
 
 const ClickableItemList = (props) => {
 
     const {itemList, onItemSelected} = props
 
     return (
-        <ul>
+        <ListGroup>
             {itemList.map(item =>
 
-                <li key={item.id}>
-                    <a href="#"
-                       onClick={(e) => {
-                           e.preventDefault()
-                           onItemSelected(item.id)
-                       }}
-                    >{item.name}</a>
-                </li>
+                <ListGroupItem
+                    key={item.id}
+                    onClick={() => {
+                        onItemSelected(item.id)
+                    }}
+                >
+                    {item.name}
+                </ListGroupItem>
             )}
-        </ul>
+        </ListGroup>
     )
 }
 
