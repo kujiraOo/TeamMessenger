@@ -2,7 +2,7 @@
   "name": "TeamMessenger",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001",
+  "proxy": "http://84.249.192.164:8080/taskms/rest",
   "devDependencies": {
     "nock": "^9.0.6",
     "react-scripts": "0.8.5",
