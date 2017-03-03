@@ -1,53 +1,124 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {modifyUser} from '../../actions/UserActions'
+import {SplitButton, MenuItem, Panel, Well, FormControl, ControlLabel, Button} from 'react-bootstrap'
+import {HR_USER, NORMAL_USER} from '../../constants/UserTypes'
 
 class UserDetails extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = {...this.props}
+        this.state = this.constructState(props)
+    }
+
+    // Flatten user data
+    constructState(props) {
+        const {user} = props
+        const {contactDetails} = user
+        let state = {...user}
+
+        if (contactDetails) {
+            state = {...state, ...contactDetails}
+
+            const {address} = contactDetails
+
+            if (address) {
+                state = {...state, ...address}
+            }
+        }
+
+        return state
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({...nextProps})
-    }
-
-    handleFirstNameChange(e) {
-        const {user} = this.state
-
-        this.setState({
-            user: {...user, firstName: e.target.value}
-        })
-    }
-
-    handleLastNameChange(e){
-        const {user} = this.state
-
-        this.setState({
-            user: {...user, lastName: e.target.value}
-        })
+        const state = this.constructState(nextProps)
+        this.setState({...state})
     }
 
     updateUserData() {
         const {dispatch} = this.props
-        const {user} = this.state
-        dispatch(modifyUser(user))
+        const {userName, firstName, lastName, status, email, phoneNumber, city, street, postalCode, id, groups} = this.state
+        const contactDetails = {
+            email,
+            phoneNumber,
+            address: {
+                city,
+                street,
+                postalCode
+            }
+        }
+        const userData = {
+            id,
+            groups,
+            userName,
+            firstName,
+            lastName,
+            status,
+            contactDetails
+        }
+
+        dispatch(modifyUser(userData))
     }
 
-    render() {
-
-        const {firstName, lastName} = this.state.user
+    renderTextInput(label, key, value) {
+        const placeHolder = 'Enter new ' + label.toLowerCase()
 
         return (
             <div>
-                <h3>User Details</h3>
-                First name: <input value={firstName} onChange={(e) => {this.handleFirstNameChange(e)}}/>
-                <br/>
-                Last name: <input value={lastName} onChange={(e) => {this.handleLastNameChange(e)}}/>
-                <br/>
-                <button onClick={() => {this.updateUserData()}} className="btn btn-primary">Update user info</button>
+                <ControlLabel>{label}</ControlLabel>
+                <FormControl
+                    type="text"
+                    value={value}
+                    placeholder={placeHolder}
+                    onChange={e => this.setState({
+                        [key]: e.target.value
+                    })}
+                />
             </div>
+        )
+    }
+
+    render() {
+        const currentUserData = this.props.user
+        const currentFirstName = currentUserData.firstName
+        const currentLastName = currentUserData.lastName
+        const {firstName, lastName, status, email, phoneNumber, city, street, postalCode} = this.state
+
+        return (
+            <Well>
+                <h3>{currentFirstName} {currentLastName}</h3>
+
+                {this.renderTextInput('First name', 'firstName', firstName)}
+                {this.renderTextInput('Last Name', 'lastName', lastName)}
+
+                <ControlLabel>User type</ControlLabel>
+                <FormControl
+                    value={status}
+                    componentClass="select"
+                    onChange={e => this.setState({
+                        status: e.target.value
+                    })}
+                >
+                    <option value={NORMAL_USER}>Normal user</option>
+                    <option value={HR_USER}>HR user</option>
+                </FormControl>
+
+                {this.renderTextInput('Email', 'email', email)}
+                {this.renderTextInput('Phone number', 'phoneNumber', phoneNumber)}
+                {this.renderTextInput('City', 'city', city)}
+                {this.renderTextInput('Street', 'street', street)}
+                {this.renderTextInput('Postal code', 'postalCode', postalCode)}
+
+                <br/>
+                <Button
+                    bsStyle="primary"
+                    onClick={() => {
+                        this.updateUserData()
+                    }}
+                >
+                    Update user info
+                </Button>
+            </Well>
         )
     }
 }
