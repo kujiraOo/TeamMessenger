@@ -1,0 +1,10 @@
+
+
+div.list-group button.list-group-item{
+    background-color: white;
+}
+
+div.list-group button.list-group-item:focus {
+    background-color: #009688;
+    color: white;
+}
