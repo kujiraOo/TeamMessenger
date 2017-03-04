@@ -4,7 +4,7 @@ import ClickableItemList from '../../components/shared/ClickableItemList'
 import GroupCreationForm from './GroupCreationForm'
 import GroupDetails from './GroupDetails'
 import {fetchGroupItems, displayGroupDetails, selectGroupDetails} from '../../actions/GroupActions'
-
+import {Panel, FormControl, ListGroupItem} from 'react-bootstrap'
 
 export class GroupManagement extends React.Component {
 
@@ -17,7 +17,7 @@ export class GroupManagement extends React.Component {
         }
     }
 
-    updateGroupsByNameFilter(e) {
+    updateGroupByNameFilter(e) {
         this.setState({
             groupByNameFilterValue: e.target.value
         })
@@ -35,7 +35,6 @@ export class GroupManagement extends React.Component {
     }
 
     onCreateNewGroupSelected(e) {
-        e.preventDefault()
         const {dispatch} = this.props
         dispatch(selectGroupDetails(null))
         this.setState({selectedCreateNewGroup: true})
@@ -61,20 +60,30 @@ export class GroupManagement extends React.Component {
 
         return (
             <div className="row">
-                <div className="col-sm-2">
-                    search:
-                    <input onChange={(e) => {this.updateGroupsByNameFilter(e)}}/>
+                <Panel className="col-sm-2">
+                    <FormControl
+                        type="text"
+                        placeholder='Group search'
+                        onChange={(e) => {
+                            this.updateGroupByNameFilter(e)
+                        }}
+                    />
+                    <br/>
                     <ClickableItemList
                         itemList={this.visibleGroups()}
                         onItemSelected={groupId => {
                             this.onGroupItemSelected(groupId)
                         }}
                     />
-                    <a onClick={(e) => {
-                        this.onCreateNewGroupSelected(e)
-                    }}>Create new group</a>
-                </div>
-                <div className="col-sm-10">
+                    <ListGroupItem
+                        onClick={() => {
+                            this.onCreateNewGroupSelected()
+                        }}>
+                        Create new group
+                    </ListGroupItem>
+                </Panel>
+                <div className="col-sm-1"/>
+                <div className="col-sm-8">
                     {selectedGroupDetails && <GroupDetails/>}
                     {selectedCreateNewGroup && <GroupCreationForm/>}
                 </div>

@@ -1,20 +1,22 @@
 import React from 'react'
+import {ListGroup, ListGroupItem, Button} from 'react-bootstrap'
 
 const ItemWithButtonList = props => {
 
     const {itemList, onItemButtonClick, buttonText} = props
 
     return (
-        <ul>
+        <ListGroup>
             {itemList.map(item =>
-                <li key={item.id}>
+                <ListGroupItem key={item.id}>
                     {item.name}
-                    <button onClick={() => {
+                    <Button bsStyle="primary" className="pull-right" onClick={() => {
                         onItemButtonClick(item.id)
-                    }}>{buttonText}</button>
-                </li>
+                    }}>{buttonText}</Button>
+                    <div className="clearfix"/>
+                </ListGroupItem>
             )}
-        </ul>
+        </ListGroup>
     )
 }
 

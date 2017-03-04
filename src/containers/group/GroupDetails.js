@@ -5,66 +5,55 @@ import {modifyGroup} from '../../actions/GroupActions'
 import {fetchUserItems} from '../../actions/UserActions'
 import ModalPopup from '../../components/shared/ModalPopup'
 import ItemWithButtonList from '../../components/shared/ItemWithButtonList'
-
+import {Well, FormControl, ControlLabel, Button, ListGroupItem} from 'react-bootstrap'
 
 class GroupDetails extends React.Component {
 
     constructor(props) {
         super(props)
 
-        this.state = {...props}
+        this.state = {...props.group}
         this.props.dispatch(fetchUserItems())
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({...nextProps})
+        this.setState({...nextProps.group})
     }
 
     removeUser(userId) {
         const dispatch = this.props.dispatch
-        let group = this.state.group
-
-        group = {...group, users: _.without(group.users, userId)}
+        const {users} = this.state
+        const group = {...this.state, users: _.without(users, userId)}
 
         dispatch(modifyGroup(group))
     }
 
     addUser(userId) {
         const dispatch = this.props.dispatch
-        let group = this.state.group
+        const groupData = {...this.state, users: _.union(this.state.users, [userId])}
 
-        group = {...group, users: _.union(group.users, [userId])}
-
-        this.setState({isUserModalOpen: false})
-        dispatch(modifyGroup(group))
+        dispatch(modifyGroup(groupData))
     }
 
     addSubordinateGroup(groupId) {
         const dispatch = this.props.dispatch
-        let group = this.state.group
+        const groupData = {...this.state, subordinateGroups: _.union(this.state.subordinateGroups, [groupId])}
 
-        group = {...group, subordinateGroups: _.union(group.subordinateGroups, [groupId])}
-
-        this.setState({isUserModalOpen: false})
-        dispatch(modifyGroup(group))
+        dispatch(modifyGroup(groupData))
     }
 
     removeSubordinateGroup(groupId) {
         const dispatch = this.props.dispatch
-        let group = this.state.group
+        const groupData = {...this.state, subordinateGroups: _.without(this.state.subordinateGroups, groupId)}
 
-        group = {...group, subordinateGroups: _.without(group.subordinateGroups, groupId)}
-
-        dispatch(modifyGroup(group))
+        dispatch(modifyGroup(groupData))
     }
 
-    changeManagerGroup(groupId) {
+    changeManagerGroup(managerGroupId) {
         const dispatch = this.props.dispatch
-        let group = this.state.group
+        const groupData = {...this.state, managerGroup: managerGroupId}
 
-        group = {...group, managerGroup: groupId}
-
-        dispatch(modifyGroup(group))
+        dispatch(modifyGroup(groupData))
     }
 
     userListItem(user) {
@@ -90,8 +79,8 @@ class GroupDetails extends React.Component {
     }
 
     renderGroupUserList() {
-        const groupUserIds = this.state.group.users
-        const users = this.state.users
+        const groupUserIds = this.state.users
+        const {users} = this.props
 
         if (groupUserIds) {
             const groupUsers = groupUserIds.map(userId => this.userListItem(users[userId]))
@@ -109,19 +98,18 @@ class GroupDetails extends React.Component {
     }
 
     renderManagerGroup() {
-        const group = this.state.group
-        const managerGroup = this.state.groups[group.managerGroup]
+        const managerGroup = this.props.groups[this.state.managerGroup]
 
         if (managerGroup) {
             return (
-                <span>{managerGroup.name}</span>
+                <ListGroupItem>{managerGroup.name}</ListGroupItem>
             )
         }
     }
 
     renderSubordinateGroups() {
-        const subordinateGroupIds = this.state.group.subordinateGroups
-        const groups = this.state.groups
+        const subordinateGroupIds = this.state.subordinateGroups
+        const groups = this.props.groups
 
         if (subordinateGroupIds) {
             const subordinateGroupList = subordinateGroupIds.map(subordinateGroupId => groups[subordinateGroupId])
@@ -139,7 +127,7 @@ class GroupDetails extends React.Component {
     }
 
     renderSubordinateGroupCandidates() {
-        const groups = this.state.groups
+        const groups = this.props.groups
         const groupList = Object.values(groups)
 
         return (
@@ -154,7 +142,7 @@ class GroupDetails extends React.Component {
     }
 
     renderManagerGroupCandidates() {
-        const groups = this.state.groups
+        const groups = this.props.groups
         const groupList = Object.values(groups)
 
         return (
@@ -169,36 +157,30 @@ class GroupDetails extends React.Component {
     }
 
     render() {
-        const group = this.state.group
+        const {id, name} = this.state
 
         return (
-            <div>
-                <h3>Group Details</h3>
-
-                <ul>
-                    <li>name: {group.name}</li>
-                    <li>id: {group.id}</li>
-                </ul>
+            <Well>
+                <h3>{name} {id}</h3>
 
                 <h4>Users</h4>
-
                 {this.renderGroupUserList()}
-
                 <ModalPopup
                     openModalButtonText="Add user to group"
                     modalTitle="Add user to group"
                     renderBody={() => this.renderUsersToAddList()}
                 />
+                <br/>
 
                 <h4>Manager Group</h4>
-
                 {this.renderManagerGroup()}
-
+                <br/>
                 <ModalPopup
                     openModalButtonText="Change manager group"
                     modalTitle="Change manager group"
                     renderBody={() => this.renderManagerGroupCandidates()}
                 />
+                <br/>
 
                 <h4>Subordinate Groups</h4>
 
@@ -209,7 +191,7 @@ class GroupDetails extends React.Component {
                     modalTitle="Add subordinate group"
                     renderBody={() => this.renderSubordinateGroupCandidates()}
                 />
-            </div>
+            </Well>
         )
     }
 }

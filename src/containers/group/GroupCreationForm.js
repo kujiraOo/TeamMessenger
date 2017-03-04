@@ -1,6 +1,7 @@
 import React from 'react'
 import {createGroup} from '../../actions/GroupActions'
 import {connect} from 'react-redux'
+import {Well, ControlLabel, FormControl, Button} from 'react-bootstrap'
 
 
 class GroupCreationForm extends React.Component {
@@ -25,11 +26,17 @@ class GroupCreationForm extends React.Component {
         const {newGroupName} = this.state
 
         return (
-            <div>
-                Create new group <br/>
-                Name <input value={newGroupName} onChange={(e) => {this.onGroupNameChange(e)}}/>
-                <button onClick={() => {this.onCreateGroupButtonClicked()}}>Create group</button>
-            </div>
+            <Well>
+                <h3>Create new group</h3>
+                <ControlLabel>Group name</ControlLabel>
+                <FormControl
+                    value={newGroupName}
+                    onChange={(e) => {this.onGroupNameChange(e)}}
+                    placeholder="Enter group name"
+                />
+                <br/>
+                <Button bsStyle="primary" onClick={() => {this.onCreateGroupButtonClicked()}}>Create group</Button>
+            </Well>
         )
     }
 }
