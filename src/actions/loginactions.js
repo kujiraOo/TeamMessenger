@@ -23,7 +23,7 @@ export function fetchLoginData(loginInfo) { //action when dispatched will also c
 		//let req = sendAuthenticationInfo(loginInfo)
 		let req = requestOperation('AUTHENTICATION_INFO', loginInfo)
 		dispatch(req)
-		return fetch('http://localhost:3000/auth', {
+		return fetch('/auth', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -36,6 +36,7 @@ export function fetchLoginData(loginInfo) { //action when dispatched will also c
 			return response.json()})
 		.then((authData) => {
 			dispatch(responseToRequest(req, authData))
+
 			dispatch(redirect('/workspace'))
 		})
 		.catch((error) => {console.log(error)});

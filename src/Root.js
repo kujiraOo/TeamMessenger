@@ -8,7 +8,7 @@ import App from './components/App.js'
 import IndexPage from './components/IndexPage.js'
 import LoginForm from './components/LoginForm.js'
 import WorkSpace from './containers/Workspace.js'
-import TaskArea from './components/TaskArea'
+import TaskArea from './containers/TaskArea'
 import IssueArea from './components/IssueArea'
 import GroupManagementArea from './containers/group/GroupManagementArea'
 import UserManagementArea from './containers/user/UserManagementArea'
@@ -52,6 +52,3 @@ export default class Root extends React.Component {
     }
 }
 
-/* Automation script */
-import {automateLogin} from './automatescript/automateLogin'
-//automateLogin("hruser");

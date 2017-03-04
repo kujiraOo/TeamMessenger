@@ -2,7 +2,7 @@
   "name": "TeamMessenger",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://84.249.192.164:8080/taskms/rest/",
+  "proxy": "http://84.249.192.164:8080/taskms/rest",
   "devDependencies": {
     "fetch-mock": "^5.9.4",
     "nock": "^9.0.6",
