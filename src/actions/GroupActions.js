@@ -79,7 +79,6 @@ export function displayGroupDetails(groupId) {
     return dispatch => {
         dispatch(fetchGroupDetailsRequest())
 
-        console.log(store.getState())
         return fetch(`/groups/${groupId}`, {
             method: 'GET',
             headers: {
