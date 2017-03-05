@@ -2,12 +2,13 @@ import * as loginActions from './loginactions'
 import * as issueActions from './issueactions'
 import * as taskActions from './taskactions'
 import * as groupanduseraction from './groupanduseraction'
-
+import * as filterActions from './filterAction'
 const actions = {
 	loginActions,
 	issueActions,
 	taskActions,
-	groupanduseraction
+	groupanduseraction,
+	filterActions
 }
 export default actions
 

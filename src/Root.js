@@ -6,7 +6,7 @@ import App from './components/App.js'
 import IndexPage from './components/IndexPage.js'
 import LoginForm from './components/LoginForm.js'
 import WorkSpace from './containers/Workspace.js'
-import TaskArea from './components/TaskArea'
+import TaskArea from './containers/TaskArea'
 import IssueArea from './components/IssueArea'
 import ManagementArea from './components/ManagementArea'
 
@@ -22,7 +22,7 @@ export default class Root extends React.Component {
 					<Route path="/login" component={LoginForm}></Route>
 					<Route path="/workspace" component={WorkSpace}>
 						<Route path="task" component={TaskArea}></Route>
-						<Route path="issue" component={IssueArea}></Route>
+						<Route path="issue" component={TaskArea}></Route>
 						<Route path="management" component={ManagementArea}></Route>
 					</Route>
 				</Route>
@@ -33,4 +33,8 @@ export default class Root extends React.Component {
 
 /* Automation script */
 import {automateLogin} from './automatescript/automateLogin'
-automateLogin("hruser");
+
+// automateLogin("hruser");
+
+automateLogin("cashierLead");
+
