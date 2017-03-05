@@ -1,6 +1,7 @@
-import loginReducer from './loginReducer.js'
 import {combineReducers} from 'redux'
-
-const rootReducer = loginReducer;
-
+import authentication from './loginReducer.js'
+import tasks from './taskReducer'
+import issues from './issueReducer'
+import filters from './filterReducer'
+const rootReducer = combineReducers({authentication, tasks, issues, filters});
 export default rootReducer;

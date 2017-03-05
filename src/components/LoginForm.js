@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Panel, Button, FormControl, FormGroup, HelpBlock} from 'react-bootstrap'
-import {fetchLoginData, } from '../actions/loginActions'
+import actions from '../actions/index'
 import {connect} from 'react-redux'
 import  loadingimg from '../img/loading.svg'
 
@@ -14,10 +14,12 @@ class LoginForm extends React.Component {
 		this.setState({username})
 	}
 	handleSubmit(e) {
-		this.props.dispatch(fetchLoginData(this.state))
+		let {fetchLoginData} = actions.loginActions
+		let {dispatch} = this.props
+		dispatch(fetchLoginData(this.state))
 	}
 	render() {
-		let logged = (this.props.response == 404) ? 'danger' : 'primary'
+		let logged = (this.props.response === 404) ? 'danger' : 'primary'
 		if (this.props.isFetching) return (<img src={loadingimg} alt=""/>)
 		else return (
 		<div className="container">
