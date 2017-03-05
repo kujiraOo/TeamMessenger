@@ -1,12 +1,25 @@
 
 
 div.row div.list-group button.list-group-item {
-    background-color: green;
-    color: aquamarine;
+    background-color: white;
+    color: black;
 }
 
-button.list-group-item:focus {
+div.row div.list-group button.list-group-item:focus {
     background-color: #009688;
+    color: white;
+} 
+ul.pull-left li a{
+    color: black;
+}
+
+ul.pull-left li a:focus{
+        background-color: #009688;
     color: white;
 }
 
+
+div.well {
+        background: rgba(255,255, 255, 0.9);
+
+}

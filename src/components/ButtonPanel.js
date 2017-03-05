@@ -19,7 +19,7 @@ class ButtonPanel extends React.Component {
 				<Button active={(bySource == 'VIEW_RECEIVED')} onClick={(flag) => {this.setFilterBySource('RECEIVED')}}>Received</Button>
 			</ButtonGroup>
 			<ButtonGroup>
-			<DropdownButton bsStyle="primary" title="Actions">
+			<DropdownButton bsStyle="primary" title="Actions" id="undefined">
 				<MenuItem eventKey="1">Create a task</MenuItem>
 				<MenuItem eventKey="2">Edit this task</MenuItem>
 				<MenuItem eventKey="3">Delete this task</MenuItem>
