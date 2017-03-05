@@ -11,7 +11,7 @@ import IssueArea from './components/IssueArea'
 import ManagementArea from './components/ManagementArea'
 
 export const store = configureStore() //bad, we dont export store. But in this case we just export for automation
-
+const TaskAreaWrapper = (key = 1) => {return <TaskArea key={key}></TaskArea>}
 export default class Root extends React.Component {
 	render() {
 		return (
@@ -21,8 +21,8 @@ export default class Root extends React.Component {
 					<IndexRoute component={IndexPage}></IndexRoute>
 					<Route path="/login" component={LoginForm}></Route>
 					<Route path="/workspace" component={WorkSpace}>
-						<Route path="task" component={TaskArea}></Route>
-						<Route path="issue" component={TaskArea}></Route>
+						<Route path="task" component={TaskAreaWrapper}></Route>
+						<Route path="issue" component={IssueArea}></Route>
 						<Route path="management" component={ManagementArea}></Route>
 					</Route>
 				</Route>

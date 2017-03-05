@@ -1,6 +1,9 @@
 import React from 'react'
 import {Panel, ListGroup, ListGroupItem} from 'react-bootstrap'
 class Item extends React.Component {
+	constructor(props) {
+		super(props)
+	}
 	render() {
 		let {data} = this.props
 		let name = data.sender.firstName + ' ' + data.sender.lastName
@@ -17,11 +20,14 @@ export default class TaskList extends React.Component {
 	constructor(props) {
 		super(props)
 	}
+/*	shouldComponentUpdate(nextProps, nextState) {
+		return (nextProps.entries.length != this.props.entries.length);
+	}
+	componentWillUpdate(nextProps, nextState) {
+		if (nextProps.entries!= this.props.entries) this.props.taskSelect(undefined);
+	}*/
 	render() {
-		console.log('TESTING TASK LIST')
-		const {list} = this.props
-		console.log(list)
-		console.log(this.props.items)
+		const {list, entries} = this.props
 		const items = this.props.entries.map((id) => {
 			let entity = list[id]
 			return (<ListGroupItem key={id} onClick={()=> this.props.taskSelect(id)}>

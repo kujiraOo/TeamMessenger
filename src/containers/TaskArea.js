@@ -15,17 +15,20 @@ class TaskArea extends React.Component {
 		let {dispatch, userId} = this.props
 		dispatch(fetchTasks(userId))
 	}
+	componentWillUnmount() {}
 	selectTask(id) {
-		let {dispatch, userId} = this.props
-		let {fetchTaskDetail} = actions.taskActions
-		dispatch(fetchTaskDetail(id, userId))
+		if (!id) return
 		this.setState({id})
 	}
-
+	requestTaskDetail() {
+		let {dispatch, userId} = this.props
+		let {fetchTaskDetail} = actions.taskActions
+		dispatch(fetchTaskDetail(this.state.id, userId))
+	}
 	render() {
 		return (
 		<div className="row">
-				<h1>There is {this.props.tasks.allIds.length} items</h1>
+				<h1>There is {this.props.tasks.allIds.length} items. Current id is: {this.state.id || "undefined"}</h1>
 				<div className="col-sm-4">
 				<div className="row">
 					<ButtonPanel id={this.state.id}  />
@@ -34,14 +37,17 @@ class TaskArea extends React.Component {
 					<TaskList list={this.props.tasks.byId} entries={this.props.tasks.allIds} taskSelect={(id) => {this.selectTask(id)}}/>
 				</div>
 				</div>
-				<div className="col-sm-7"><DetailPanel entity={this.props.tasks.byId[this.state.id]}></DetailPanel></div>
+				<div className="col-sm-7"><DetailPanel entity={this.props.tasks.byId[this.state.id]} requestTaskDetail={()=> {this.requestTaskDetail}}></DetailPanel></div>
 		</div>
 		)
 	}
 }
 function filterTaskBySource(flag, sourceId, data) {
 	if (flag == 'VIEW_SENT') {
-		let byId =  _.omitBy(_.mapValues(data.byId, (entity) => {if (entity.sender.id == sourceId) return entity } ), _.isUndefined)
+		let byId =  _.omitBy(_.mapValues(data.byId, (entity) => {
+			if (entity.sender.id == sourceId) return entity;
+		 	else return undefined 
+		 }), _.isUndefined)
 		let allIds = _.map(_.keys(byId), _.toNumber)
 		return {
 			byId,
@@ -49,11 +55,13 @@ function filterTaskBySource(flag, sourceId, data) {
 		}
 	}
 	if (flag == 'VIEW_RECEIVED') {
-		let byId =  _.omitBy(_.mapValues(data.byId, (entity)=>{	
-			let match = false 
-			entity.recipients.forEach((user)=> {match = match || (user.id == sourceId)})
-			return (match) ? entity : null
-		}))
+		let byId =  _.omitBy(_.mapValues(data.byId, (entity)=> {
+			let match
+			_.each(entity.recipients, (target) => {match = (target.id == sourceId) || match})
+			console.log(entity)
+			return (match) ? entity : undefined
+		})
+		, _.isUndefined)
 		let allIds = _.map(_.keys(byId), _.toNumber)
 		return {
 			byId,
