@@ -57,5 +57,5 @@ export default class Root extends React.Component {
 }
 
 /* Automation script */
-// import {automateLogin} from './automatescript/automateLogin'
-// automateLogin("cashierLead");
+import {automateLogin} from './automatescript/automateLogin'
+automateLogin("cashierLead");
