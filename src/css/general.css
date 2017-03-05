@@ -1,10 +1,12 @@
 
 
-div.list-group button.list-group-item{
-    background-color: white;
+div.row div.list-group button.list-group-item {
+    background-color: green;
+    color: aquamarine;
 }
 
-div.list-group button.list-group-item:focus {
+button.list-group-item:focus {
     background-color: #009688;
     color: white;
 }
+
