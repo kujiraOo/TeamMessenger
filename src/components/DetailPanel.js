@@ -5,6 +5,9 @@ export default class DetailPanel extends React.Component {
 	constructor(props) {
 		super(props)
 	}
+	componentWillUpdate(nextProps, nextState) {
+		this.props.requestTaskDetail()
+	}
 	render() {
 		let {entity} = this.props
 		if (entity) {
