@@ -3,6 +3,7 @@ import {Navbar,Nav, NavItem} from 'react-bootstrap'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import {redirect} from '../actions/helper'
+import {getLoggedInUser} from '../reducers/rootReducer'
 import {HR_USER} from '../constants/UserTypes'
 
 class Sidebar extends Component{
@@ -30,8 +31,10 @@ class Sidebar extends Component{
 	}
 }
 const mapStateToProps = (state) => {
+	const loggedInUser = getLoggedInUser(state)
+
 	return {
-		userStatus: state.authentication.status
+		userStatus: loggedInUser.status
 	}
 }
 export default connect(mapStateToProps)(Sidebar)

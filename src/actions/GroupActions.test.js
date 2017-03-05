@@ -4,7 +4,7 @@ import thunk from 'redux-thunk'
 import * as types from '../constants/ActionTypes'
 import fetchMock from 'fetch-mock'
 import {normalize} from 'normalizr'
-import * as schemas from '../api/shemas'
+import * as schemas from '../api/schemas'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

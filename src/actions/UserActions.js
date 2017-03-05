@@ -1,12 +1,12 @@
 import * as types from '../constants/ActionTypes'
 import 'whatwg-fetch'
 import {normalize} from 'normalizr'
-import {user as userSchema} from '../api/shemas'
+import {user as userSchema} from '../api/schemas'
 import {updateGroups} from './GroupActions'
 import {store} from '../Root'
 
 function getLoggedInUserId() {
-    return store.getState().authentication.id
+    return store.getState().authentication.loggedInUserId
 }
 
 export function updateUsers(users) {

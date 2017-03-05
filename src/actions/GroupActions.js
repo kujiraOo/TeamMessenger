@@ -2,11 +2,11 @@ import * as types from '../constants/ActionTypes'
 import {updateUsers} from './UserActions'
 import 'whatwg-fetch'
 import {normalize} from 'normalizr'
-import {group as groupSchema} from '../api/shemas'
+import {group as groupSchema} from '../api/schemas'
 import {store} from '../Root'
 
 function getLoggedInUserId() {
-    return store.getState().authentication.id
+    return store.getState().authentication.loggedInUserId
 }
 
 function fetchGroupItemsRequest() {

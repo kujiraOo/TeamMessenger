@@ -25,6 +25,7 @@ import UserManagementArea from './containers/user/UserManagementArea'
 //         "subGroups": [],
 //         "groups": [],
 //         "superGroups": [],
+//         status: 'HR_MANAGER',
 //         "isHR": true,
 //         loggedin: true
 //     }
@@ -52,3 +53,6 @@ export default class Root extends React.Component {
     }
 }
 
+/* Automation script */
+// import {automateLogin} from './automatescript/automateLogin'
+// automateLogin("cashierLead");

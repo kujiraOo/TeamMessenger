@@ -1,4 +1,4 @@
-import {group} from './shemas'
+import {group} from './schemas'
 import {normalize} from 'normalizr'
 
 describe('groups api', () => {
