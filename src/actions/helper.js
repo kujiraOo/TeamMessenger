@@ -38,9 +38,9 @@ export function redirect(url) {
 	}
 }
 
-export function checkStatus(response, requestAction) {
+export function checkStatus(response) {
   	if (response.status >= 200 && response.status < 300) return
-    var error = new Error(`Failed to perform operation ${requestAction.type}`)
+    var error = new Error(`Failed to access ${response.url}`)
     error.response = response
     throw error
 }

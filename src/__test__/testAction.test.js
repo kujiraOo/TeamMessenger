@@ -11,32 +11,7 @@ import _ from 'lodash/array'
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 
-describe('login actions', ()=> {
-	const store = mockStore({})
-	const data = {
-		test: 'receivedTest'
-	}
-	nock('http://localhost:3000'). get('/api/auth').reply(200, {body: data})
-	const expectedActions = [{
-		type: 'REQUEST_AUTHENTICATION_INFO',
-		payload: {username: 'hruser'}
-	},{
-		type: 'SERVER_RESPONSE_TO_REQUEST_AUTHENTICATION_INFO',
-		payload: {
-			response: 200,
-			extra: undefined
-		}
-	},{
-		type: 'RECEIVE_REQUEST_AUTHENTICATION_INFO',
-		payload: data,
-		request: {username: 'hruser'}
-	}]
-	it('should dispatch login authentication actions', ()=> {
-		return store.dispatch(fetchLoginData({username: 'hruser'}))
-		.then(() => {
-			expect(_.take(store.getActions(),3)).toEqual(expectedActions)})
-	})
-})
+
 describe('task fetching', ()=> {
 	afterEach(()=>{nock.cleanAll()})
 	//set up mock server

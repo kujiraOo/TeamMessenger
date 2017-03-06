@@ -1,5 +1,9 @@
 import React from 'react'
-import {Panel, ListGroup, ListGroupItem} from 'react-bootstrap'
+import style from '../css/general.css'
+import {
+    Panel, ListGroup, ListGroupItem
+}
+from 'react-bootstrap'
 class Item extends React.Component {
 	constructor(props) {
 		super(props)
@@ -43,3 +47,4 @@ export default class TaskList extends React.Component {
 			)
 	}
 }
+

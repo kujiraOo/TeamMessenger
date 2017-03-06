@@ -9,7 +9,6 @@ const byId = createReducer({}, { //other fetching controls (s)
 	'RECEIVE_REQUEST_GROUP_DETAIL': makePatchEntityById(true),
 	'RECEIVE_REQUEST_POST_GROUP': makePatchEntityById(true),
 	'RECEIVE_REQUEST_MODIFY_GROUP': makePatchEntityById(true),
-	'RECEIVE_REQUEST_MODIFY_GROUP'
 	'RECEIVE_REQUEST_COMPLETE_GROUP': makePatchEntityById(true),
 	'RECEIVE_REQUEST_DELETE_GROUP' : deleteEntityAllId
 })
