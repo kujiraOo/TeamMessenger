@@ -62,5 +62,5 @@ import {automateLogin} from './automatescript/automateLogin'
 //automateLogin("hruser");
 
 //automateLogin("cashierLead");
-            automateLogin("hr");
+            automateLogin("operator1");
 

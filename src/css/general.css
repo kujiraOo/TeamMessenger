@@ -40,3 +40,15 @@ div.well {
     -moz-box-shadow: 10px 10px 6px -9px rgba(0, 0, 0, 0.75);
     box-shadow: 10px 10px 6px -9px rgba(0, 0, 0, 0.75); 
 }
+/*
+.customButton {
+    color: white;
+    background-color: red;
+}
+*/
+
+.btn.btn-default:focus{
+    color: white;
+    background-color: #EE4B28;
+}
+

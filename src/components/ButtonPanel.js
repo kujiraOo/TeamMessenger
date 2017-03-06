@@ -2,6 +2,8 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Button, ButtonGroup, DropdownButton, ButtonToolbar, MenuItem} from 'react-bootstrap'
 import {viewBy} from '../actions/filterAction'
+import style from '../css/general.css'
+
 class ButtonPanel extends React.Component {
 	constructor(props) {
 		super(props)
@@ -15,8 +17,8 @@ class ButtonPanel extends React.Component {
 		return (
 			<ButtonToolbar>
 			<ButtonGroup>
-				<Button active={(bySource == 'VIEW_SENT')} onClick={(flag) => {this.setFilterBySource('SENT')}}>Sent</Button>
-				<Button active={(bySource == 'VIEW_RECEIVED')} onClick={(flag) => {this.setFilterBySource('RECEIVED')}}>Received</Button>
+				<Button className="customButton" active={(bySource == 'VIEW_SENT')} onClick={(flag) => {this.setFilterBySource('SENT')}}>Sent</Button>
+				<Button className="customButton" active={(bySource == 'VIEW_RECEIVED')} onClick={(flag) => {this.setFilterBySource('RECEIVED')}}>Received</Button>
 			</ButtonGroup>
 			<ButtonGroup>
 			<DropdownButton bsStyle="primary" title="Actions" id="undefined">
