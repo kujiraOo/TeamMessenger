@@ -4,6 +4,7 @@ import DetailPanel from '../components/DetailPanel'
 import ButtonPanel from '../components/ButtonPanel'
 import {connect} from 'react-redux'
 import actions from '../actions/index'
+import style from '../css/general.css'
 import _ from 'lodash'
 class TaskArea extends React.Component {
 	constructor(props) {
@@ -29,8 +30,8 @@ class TaskArea extends React.Component {
 		return (
 		<div className="row">
 				<h1>There is {this.props.tasks.allIds.length} items. Current id is: {this.state.id || "undefined"}</h1>
-				<div className="col-sm-4">
-				<div className="row">
+				<div className="col-sm-4 ">
+				<div className="row btnContainer">
 					<ButtonPanel id={this.state.id}  />
 				</div>
 				<div className="row">
