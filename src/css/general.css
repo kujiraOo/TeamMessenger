@@ -1,5 +1,3 @@
-
-
 div.row div.list-group button.list-group-item {
     background-color: white;
     color: black;
@@ -8,22 +6,37 @@ div.row div.list-group button.list-group-item {
 div.row div.list-group button.list-group-item:focus {
     background-color: #009688;
     color: white;
-} 
-ul.pull-left li a{
+}
+
+ul.pull-left li a {
     color: black;
 }
 
-ul.pull-left li a:focus{
-        background-color: #009688;
+ul.pull-left li a:focus {
+    background-color: #009688;
     color: white;
 }
 
-
 div.well {
-        background: rgba(255,255, 255, 0.9);
-
+    background: rgba(255, 255, 255, 0.9);
+           -webkit-box-shadow: 10px 10px 6px -9px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 6px -9px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 6px -9px rgba(0, 0, 0, 0.75); 
 }
 
-.btnContainer{
+.btnContainer {
     margin-bottom: 15px;
+}
+
+.sidebar {
+    margin-right: 10px;
+    -webkit-box-shadow: 10px 10px 6px -9px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 6px -9px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 6px -9px rgba(0, 0, 0, 0.75);
+}
+
+.list-group {
+       -webkit-box-shadow: 10px 10px 6px -9px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 6px -9px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 6px -9px rgba(0, 0, 0, 0.75); 
 }
