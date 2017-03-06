@@ -21,8 +21,8 @@ class Workspace extends React.Component{
 		return (<div>
 			<h1>Welcome, {firstName} {lastName}</h1>
 			<div className="row">
-			<div className="col-sm-1"><Sidebar/></div>
-			<div className="col-sm-11">{this.props.children}</div>
+			<div className="col-sm-12 col-md-2 col-lg-2"><Sidebar/></div>
+			<div className="col-sm-12 col-md-10 col-lg-10">{this.props.children}</div>
 			</div>
 		</div>)
 	}
