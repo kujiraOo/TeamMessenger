@@ -1,5 +1,5 @@
 //import * as action from '../actions/helper'
-import * as taskactions from '../actions/taskactions'
+import * as taskactions from '../actions/TaskActions'
 import * as issueactions from '../actions/issueactions'
 import * as ga from '../actions/groupanduseraction'
 import {fetchLoginData} from '../actions/loginactions'

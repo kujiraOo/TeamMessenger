@@ -1,6 +1,6 @@
 import * as loginActions from './LoginActions'
 import * as issueActions from './issueactions'
-import * as taskActions from './taskactions'
+import * as taskActions from './TaskActions'
 import * as groupanduseraction from './groupanduseraction'
 import * as filterActions from './filterAction'
 const actions = {
