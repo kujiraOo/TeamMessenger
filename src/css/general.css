@@ -36,9 +36,20 @@ div.well {
 }
 
 .list-group {
-       -webkit-box-shadow: 10px 10px 6px -9px rgba(0, 0, 0, 0.75);
+    
+    -webkit-box-shadow: 10px 10px 6px -9px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 10px 10px 6px -9px rgba(0, 0, 0, 0.75);
     box-shadow: 10px 10px 6px -9px rgba(0, 0, 0, 0.75); 
+}
+
+button.list-group-item{
+    padding: 5px;
+}
+
+.panel.panel-default{
+    padding: 0px;
+    margin: 2px;
+
 }
 /*
 .customButton {
@@ -47,8 +58,10 @@ div.well {
 }
 */
 
-.btn.btn-default:focus{
+
+button.customButton.btn.btn-default:focus{
     color: white;
     background-color: #EE4B28;
+
 }
 
