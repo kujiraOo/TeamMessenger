@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {redirect} from '../actions/helper'
 import Sidebar from '../components/Sidebar.js'
+import {getLoggedInUser} from '../reducers/rootReducer'
 
 class Workspace extends React.Component{
 	constructor(props) {
@@ -27,5 +28,14 @@ class Workspace extends React.Component{
 	}
 }
 
-const mapStatesToProps = (state) => ({loggedin: state.authentication.loggedin, firstName: state.authentication.firstName, lastName: state.authentication.lastName})
+const mapStatesToProps = (state) => {
+    const {loggedin} = state.authentication
+    const {firstName, lastName} = getLoggedInUser(state)
+
+    return {
+        loggedin,
+        firstName,
+        lastName
+    }
+}
 export default connect(mapStatesToProps)(Workspace)

@@ -3,6 +3,9 @@ import {Navbar,Nav, NavItem} from 'react-bootstrap'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import {redirect} from '../actions/helper'
+import {getLoggedInUser} from '../reducers/rootReducer'
+import {HR_USER} from '../constants/UserTypes'
+
 class Sidebar extends Component{
 	constructor(props) {
 		super(props)
@@ -14,11 +17,12 @@ class Sidebar extends Component{
 	}
 	render() {
 
-		return (this.props.isHr) ? 
+		return (this.props.userStatus === HR_USER) ?
 			(<Nav pullLeft={true} bsStyle="pills" stacked={true} onSelect={this.handleNavigation}>
 				<NavItem eventKey="task">Task Viewer</NavItem>
 				<NavItem eventKey="issue">Issue Viewer</NavItem>
-				<NavItem eventKey="management">HR Management</NavItem>
+				<NavItem eventKey="group-management">Group Management</NavItem>
+				<NavItem eventKey="user-management">User Management</NavItem>
 			</Nav>
 			) : (<Nav pullLeft={true} stacked={true} onSelect={this.handleNavigation}>
 				<NavItem eventKey="task">Task Viewer</NavItem>
@@ -27,8 +31,10 @@ class Sidebar extends Component{
 	}
 }
 const mapStateToProps = (state) => {
+	const loggedInUser = getLoggedInUser(state)
+
 	return {
-		isHr: state.authentication.isHR
+		userStatus: loggedInUser.status
 	}
 }
 export default connect(mapStateToProps)(Sidebar)

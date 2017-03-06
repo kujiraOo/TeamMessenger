@@ -1,20 +1,24 @@
 import '../actions/index.js'
-import {updateObject, updateItemInArray, createReducer} from './helper'
+import {updateObject, createReducer} from './helper'
+import {FETCH_AUTH_REQUEST, FETCH_AUTH_SUCCESS, FETCH_AUTH_FAILURE, RECEIVE_AUTH} from '../constants/ActionTypes'
 
 function startFetching(authenticationState, action) {
-	return updateObject(authenticationState, {isFetching: true, responseFromServer: 0,	loggedin: false})
+    return updateObject(authenticationState, {isFetching: true, responseFromServer: 0, loggedin: false})
 }
 function recieveServerStatus(authenticationState, action) {
-	return updateObject(authenticationState, {isFetching: false, responseFromServer: action.payload.response, loggedin: action.payload.response == 200})
+    const {statusCode} = action
+    const loggedin = statusCode === 200
+    return updateObject(authenticationState, {isFetching: false, responseFromServer: statusCode, loggedin})
 }
 function recieveServerData(authenticationState, action) {
-	return updateObject(authenticationState, action.payload)
+    return {...authenticationState, loggedInUserId: action.loggedInUserId}
 }
 
 const authentication = createReducer({}, {
-	'REQUEST_AUTHENTICATION_INFO' : startFetching,
-	'SERVER_RESPONSE_TO_REQUEST_AUTHENTICATION_INFO' : recieveServerStatus,
-	'RECEIVE_REQUEST_AUTHENTICATION_INFO' : recieveServerData
+    [FETCH_AUTH_REQUEST]: startFetching,
+    [FETCH_AUTH_SUCCESS]: recieveServerStatus,
+    [FETCH_AUTH_FAILURE]: recieveServerStatus,
+    [RECEIVE_AUTH]: recieveServerData
 })
 
 export default authentication

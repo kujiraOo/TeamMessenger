@@ -74,8 +74,8 @@ const mapProp = (state) => {
 	let taskData = state.tasks;
 	let taskFilter = state.filters.tasks;
 	return {
-	tasks: filterTaskBySource(taskFilter.bySource, state.authentication.id, taskData),
-	userId: state.authentication.id
+	tasks: filterTaskBySource(taskFilter.bySource, state.authentication.loggedInUserId, taskData),
+	userId: state.authentication.loggedInUserId
     }
 }
 export default connect(mapProp)(TaskArea)

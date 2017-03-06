@@ -1,0 +1,7 @@
+exports[`Component: GroupListFilter renders a snapshot 1`] = `
+<div>
+  search:
+  <input
+    onChange={undefined} />
+</div>
+`;
