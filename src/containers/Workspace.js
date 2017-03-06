@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {redirect} from '../actions/helper'
 import Sidebar from '../components/Sidebar.js'
+import style from '../css/general.css'
 import {getLoggedInUser} from '../reducers/rootReducer'
 
 class Workspace extends React.Component{
@@ -21,8 +22,8 @@ class Workspace extends React.Component{
 		return (<div>
 			<h1>Welcome, {firstName} {lastName}</h1>
 			<div className="row">
-			<div className="col-sm-12 col-md-2 col-lg-2"><Sidebar/></div>
-			<div className="col-sm-12 col-md-10 col-lg-10">{this.props.children}</div>
+			<div className="col-sm-12 col-md-2 col-lg-2 sidebar"><Sidebar/></div>
+			<div className="col-sm-12 col-md-9 col-lg-9">{this.props.children}</div>
 			</div>
 		</div>)
 	}
