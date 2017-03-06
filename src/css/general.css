@@ -23,3 +23,7 @@ div.well {
         background: rgba(255,255, 255, 0.9);
 
 }
+
+.btnContainer{
+    margin-bottom: 15px;
+}
