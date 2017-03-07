@@ -65,3 +65,18 @@ button.customButton.btn.btn-default:focus{
 
 }
 
+.customFontAwesome{
+  margin-right: 40px;
+    margin-left: 10px;
+}
+
+ul.nav.nav-pills.nav-stacked.pull-left li a {
+    padding: 5px;
+    margin: 5px;
+
+}
+
+div.col-sm-12.col-md-2.col-lg-2.sidebar {
+    padding: 5px;
+    margin-left: 15px;
+}
