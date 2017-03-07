@@ -9,9 +9,8 @@ export default class DetailPanel extends React.Component {
 		this.props.requestTaskDetail()
 	}
 	render() {
-		let {entity} = this.props
+		const {entity, senderName} = this.props
 		if (entity) {
-			let senderName = entity.sender.firstName + ' ' + entity.sender.lastName
 			return (
 					<Well>
 						<h3>Detailed Task Information</h3>

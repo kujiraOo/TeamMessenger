@@ -9,74 +9,83 @@ import _ from 'lodash'
 class TaskArea extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = {id: undefined}
+		this.state = {selectedTaskId: undefined}
 	}
+
 	componentDidMount() {
 		let {fetchTasks} = actions.taskActions
-		let {dispatch, userId} = this.props
-		dispatch(fetchTasks(userId))
+		let {dispatch} = this.props
+		dispatch(fetchTasks())
 	}
-	componentWillUnmount() {}
-	selectTask(id) {
-		if (!id) return
-		this.setState({id})
+
+	selectTask(selectedTaskId) {
+		this.setState({selectedTaskId})
 	}
+
 	requestTaskDetail() {
-		let {dispatch, userId} = this.props
+		let {dispatch} = this.props
 		let {fetchTaskDetail} = actions.taskActions
-		dispatch(fetchTaskDetail(this.state.id, userId))
+		dispatch(fetchTaskDetail(this.state.id))
 	}
+
 	render() {
-		return (
-		<div className="row">
-				<h1>There is {this.props.tasks.allIds.length} items. Current id is: {this.state.id || "undefined"}</h1>
-				<div className="col-sm-4 ">
-				<div className="row btnContainer">
-					<ButtonPanel id={this.state.id}  />
-				</div>
-				<div className="row">
-					<TaskList list={this.props.tasks.byId} entries={this.props.tasks.allIds} taskSelect={(id) => {this.selectTask(id)}}/>
-				</div>
-				</div>
-				<div className="col-sm-7"><DetailPanel entity={this.props.tasks.byId[this.state.id]} requestTaskDetail={()=> {this.requestTaskDetail}}></DetailPanel></div>
-		</div>
-		)
+        const {tasks, users} = this.props
+	    const allIds = Object.keys(tasks.byId)
+        const {selectedTaskId} = this.state
+        const selectedTask = tasks.byId[selectedTaskId]
+        let selectedTaskSender, selectedTaskSenderName
+        if (selectedTask) {
+            selectedTaskSender = users.byId[selectedTask.sender]
+            selectedTaskSenderName = selectedTaskSender.firstName + ' ' + selectedTaskSender.lastName
+        }
+
+
+        return (
+            <div className="row">
+                <h1>There are {allIds.length} items. Current id is: {selectedTaskId || "undefined"}</h1>
+                <div className="col-sm-4 ">
+                    <div className="row btnContainer">
+                        <ButtonPanel id={selectedTaskId}/>
+                    </div>
+                    <div className="row">
+                        <TaskList list={tasks.byId} users={users} taskSelect={(id) => {
+                            this.selectTask(id)
+                        }}/>
+                    </div>
+                </div>
+                <div className="col-sm-7">
+                    <DetailPanel entity={selectedTask} senderName={selectedTaskSenderName} requestTaskDetail={() => {
+                        this.requestTaskDetail
+                    }}/>
+                </div>
+            </div>
+        )
 	}
 }
-function filterTaskBySource(flag, sourceId, data) {
-	if (flag == 'VIEW_SENT') {
-		let byId =  _.omitBy(_.mapValues(data.byId, (entity) => {
-			if (entity.sender.id == sourceId) return entity;
-		 	else return undefined 
-		 }), _.isUndefined)
-		let allIds = _.map(_.keys(byId), _.toNumber)
-		return {
-			byId,
-			allIds
-		}
-	}
-	if (flag == 'VIEW_RECEIVED') {
-		let byId =  _.omitBy(_.mapValues(data.byId, (entity)=> {
-			let match
-			_.each(entity.recipients, (target) => {match = (target.id == sourceId) || match})
-			console.log(entity)
-			return (match) ? entity : undefined
-		})
-		, _.isUndefined)
-		let allIds = _.map(_.keys(byId), _.toNumber)
-		return {
-			byId,
-			allIds
-		}
-	}
-	return data
+function filterTaskBySource(filterValue, userId, tasks) {
+    switch (filterValue) {
+        case 'VIEW_SENT':
+            return {
+                byId: _.pickBy(tasks.byId, (task) => {
+                    return task.sender == userId
+                })
+            }
+        case 'VIEW_RECEIVED':
+            return {
+                byId: _.pickBy(tasks.byId, (task) => {
+                    return _.includes(task.recipients, userId)
+                })
+            }
+        default:
+            return tasks
+    }
 }
 const mapProp = (state) => {
 	let taskData = state.tasks;
 	let taskFilter = state.filters.tasks;
-	return {
-	tasks: filterTaskBySource(taskFilter.bySource, state.authentication.loggedInUserId, taskData),
-	userId: state.authentication.loggedInUserId
-    }
+	const tasks = filterTaskBySource(taskFilter.bySource, state.authentication.loggedInUserId, taskData)
+    const users = state.users
+
+	return {tasks, users}
 }
 export default connect(mapProp)(TaskArea)
