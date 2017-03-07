@@ -1,6 +1,6 @@
-// filterAction
-export function viewBy(string) { //VIEW_SENT or VIEW_RECEIVED
+export function setReceivedSentFilter(filterValue) {
 	return {
-		type: `VIEW_${string.toUpperCase()}`
+		type: 'SET_RECEIVED_SENT_FILTER',
+		filterValue
 	}
 }

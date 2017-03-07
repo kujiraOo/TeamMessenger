@@ -1,7 +1,7 @@
 import React from 'react'
 import TaskList from '../components/TaskList'
-import DetailPanel from '../components/DetailPanel'
-import ButtonPanel from '../components/ButtonPanel'
+import TaskDetailsPanel from '../components/task/TaskDetailsPanel'
+import TaskFilterPanel from '../components/task/TaskFilterPanel'
 import {connect} from 'react-redux'
 import actions from '../actions/index'
 import style from '../css/general.css'
@@ -33,19 +33,18 @@ class TaskArea extends React.Component {
 	    const allIds = Object.keys(tasks.byId)
         const {selectedTaskId} = this.state
         const selectedTask = tasks.byId[selectedTaskId]
+
         let selectedTaskSender, selectedTaskSenderName
         if (selectedTask) {
             selectedTaskSender = users.byId[selectedTask.sender]
             selectedTaskSenderName = selectedTaskSender.firstName + ' ' + selectedTaskSender.lastName
         }
 
-
         return (
             <div className="row">
-                <h1>There are {allIds.length} items. Current id is: {selectedTaskId || "undefined"}</h1>
                 <div className="col-sm-4 ">
                     <div className="row btnContainer">
-                        <ButtonPanel id={selectedTaskId}/>
+                        <TaskFilterPanel/>
                     </div>
                     <div className="row">
                         <TaskList list={tasks.byId} users={users} taskSelect={(id) => {
@@ -54,7 +53,7 @@ class TaskArea extends React.Component {
                     </div>
                 </div>
                 <div className="col-sm-7">
-                    <DetailPanel entity={selectedTask} senderName={selectedTaskSenderName} requestTaskDetail={() => {
+                    <TaskDetailsPanel entity={selectedTask} senderName={selectedTaskSenderName} requestTaskDetail={() => {
                         this.requestTaskDetail
                     }}/>
                 </div>
@@ -62,15 +61,15 @@ class TaskArea extends React.Component {
         )
 	}
 }
-function filterTaskBySource(filterValue, userId, tasks) {
+function receivedSentFilter(filterValue, userId, tasks) {
     switch (filterValue) {
-        case 'VIEW_SENT':
+        case 'SENT':
             return {
-                byId: _.pickBy(tasks.byId, (task) => {
-                    return task.sender == userId
+                byId: _.omitBy(tasks.byId, (task) => {
+                    return _.includes(task.recipients, userId)
                 })
             }
-        case 'VIEW_RECEIVED':
+        case 'RECEIVED':
             return {
                 byId: _.pickBy(tasks.byId, (task) => {
                     return _.includes(task.recipients, userId)
@@ -83,7 +82,7 @@ function filterTaskBySource(filterValue, userId, tasks) {
 const mapProp = (state) => {
 	let taskData = state.tasks;
 	let taskFilter = state.filters.tasks;
-	const tasks = filterTaskBySource(taskFilter.bySource, state.authentication.loggedInUserId, taskData)
+	const tasks = receivedSentFilter(taskFilter.receivedSentFilter, state.authentication.loggedInUserId, taskData)
     const users = state.users
 
 	return {tasks, users}
