@@ -4,39 +4,35 @@ import {
     Panel, ListGroup, ListGroupItem
 }
 from 'react-bootstrap'
-class Item extends React.Component {
-	constructor(props) {
-		super(props)
-	}
-	render() {
-		let {data} = this.props
-		let name = data.sender.firstName + ' ' + data.sender.lastName
-		return (
-			<div>
-				<p>{data.title}</p>
-				<p>From: {name}</p>
-				<p>Deadline: {data.deadline}</p>
-			</div>
-			)
-	}
+
+function Item(props) {
+    let {task, senderName} = props
+
+    return (
+		<div>
+			<p>{task.title}</p>
+			<p>From: {senderName}</p>
+			<p>Deadline: {task.deadline}</p>
+		</div>
+    )
 }
+
 export default class TaskList extends React.Component {
 	constructor(props) {
 		super(props)
 	}
-/*	shouldComponentUpdate(nextProps, nextState) {
-		return (nextProps.entries.length != this.props.entries.length);
-	}
-	componentWillUpdate(nextProps, nextState) {
-		if (nextProps.entries!= this.props.entries) this.props.taskSelect(undefined);
-	}*/
+
 	render() {
-		const {list, entries} = this.props
-		const items = this.props.entries.map((id) => {
-			let entity = list[id]
-			return (<ListGroupItem key={id} onClick={()=> this.props.taskSelect(id)}>
-				<Item data={entity} id={id}/>
-			</ListGroupItem>)
+		const {list, users} = this.props
+		const items = Object.keys(list).map((id) => {
+			const task = list[id]
+			const user = users.byId[task.sender]
+			const senderName = user.firstName + ' ' + user.lastName
+			return (
+				<ListGroupItem key={id} onClick={() => this.props.taskSelect(id)}>
+					<Item task={task} id={id} senderName={senderName}/>
+				</ListGroupItem>
+            )
 		})
 		return (
 			<div>
@@ -44,7 +40,7 @@ export default class TaskList extends React.Component {
 				{items}
 				</ListGroup>
 			</div>
-			)
+		)
 	}
 }
 
