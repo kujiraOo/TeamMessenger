@@ -13,6 +13,11 @@ import {updateUsers} from './UserActions'
 import {updateGroups} from './GroupActions'
 import {task as taskSchema} from '../api/schemas'
 import {normalize} from 'normalizr'
+import {store} from '../Root'
+
+function getLoggedInUserId() {
+    return store.getState().authentication.loggedInUserId
+}
 
 function fetchTasksSuccess(statusCode) {
     return {
@@ -64,16 +69,16 @@ function receiveTasks(tasks) {
 export function fetchTasks() { //thunk to call api to fetch task list
     return (dispatch) => {
         dispatch(fetchTasksRequest())
-        return get('/tasks', {auth: 'ok'})
+        return get('/tasks', {auth: getLoggedInUserId()})
             .then(res => {
                 dispatch(fetchTasksSuccess(res.status))
                 return res.json()
             })
             .then(tasksData => {
                 const normalizedData = normalize(tasksData, [taskSchema])
-                dispatch(receiveTasks(normalizedData.entities.tasks))
                 dispatch(updateGroups(normalizedData.entities.groups))
                 dispatch(updateUsers(normalizedData.entities.users))
+                dispatch(receiveTasks(normalizedData.entities.tasks))
             })
             .catch(err => {
                 dispatch(fetchTasksFailure(err.response.status))
@@ -84,16 +89,16 @@ export function fetchTasks() { //thunk to call api to fetch task list
 export function fetchTask(taskId) { //thunk to call api to fetch task list
     return (dispatch) => {
         dispatch(fetchTaskRequest())
-        return get('/tasks/' + taskId, {auth: 'ok'})
+        return get('/tasks/' + taskId, {auth: getLoggedInUserId()})
             .then(res => {
                 dispatch(fetchTaskSuccess(res.status))
                 return res.json()
             })
             .then(taskData => {
                 const normalizedData = normalize(taskData, taskSchema)
-                dispatch(receiveTasks(normalizedData.entities.tasks))
                 dispatch(updateGroups(normalizedData.entities.groups))
                 dispatch(updateUsers(normalizedData.entities.users))
+                dispatch(receiveTasks(normalizedData.entities.tasks))
             })
             .catch(err => {
                 dispatch(fetchTaskFailure(err.response.status))
