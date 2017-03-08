@@ -1,4 +1,4 @@
-import {get} from '../api/fetch'
+import {get, post} from '../api/fetch'
 import {requestOperation, responseFromServer, responseToRequest, checkStatus} from './helper'
 import {
     FETCH_TASKS_SUCCESS,
@@ -90,6 +90,25 @@ export function fetchTask(taskId) { //thunk to call api to fetch task list
     return (dispatch) => {
         dispatch(fetchTaskRequest())
         return get('/tasks/' + taskId, {auth: getLoggedInUserId()})
+            .then(res => {
+                dispatch(fetchTaskSuccess(res.status))
+                return res.json()
+            })
+            .then(taskData => {
+                const normalizedData = normalize(taskData, taskSchema)
+                dispatch(updateGroups(normalizedData.entities.groups))
+                dispatch(updateUsers(normalizedData.entities.users))
+                dispatch(receiveTasks(normalizedData.entities.tasks))
+            })
+            .catch(err => {
+                dispatch(fetchTaskFailure(err.response.status))
+            })
+    }
+}
+
+export function createTask(task) {
+    return (dispatch) => {
+        return post('/tasks', {auth: getLoggedInUserId(), body: JSON.stringify(task)})
             .then(res => {
                 dispatch(fetchTaskSuccess(res.status))
                 return res.json()
