@@ -39,5 +39,15 @@ export function getManagerGroups(state, userId) {
     return {byId: _.pick(groups.byId, managerGroupIds)}
 }
 
+export function getSubordinateGroups(state, userId) {
+    const {groups} = state
+    const userGroups = getUserGroups(state, userId)
+    let subordinateGroupIds = []
+    Object.values(userGroups.byId).forEach(group => {
+        subordinateGroupIds = _.union(subordinateGroupIds, group.subordinateGroups)
+    })
+    return {byId: _.pick(groups.byId, subordinateGroupIds)}
+}
+
 const rootReducer = combineReducers({authentication, tasks, issues, filters, users, groups})
 export default rootReducer

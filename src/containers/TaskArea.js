@@ -4,6 +4,12 @@ import TaskDetailsPanel from '../components/task/TaskDetailsPanel'
 import TaskFilterPanel from '../components/task/TaskFilterPanel'
 import {connect} from 'react-redux'
 import actions from '../actions/index'
+import {
+    RECIPIENT_GROUP_FILTER,
+    SENDER_FILTER,
+    SENDER_GROUP_FILTER,
+    RECEIVED_SENT_FILTER
+} from '../constants/taskFilterConstants'
 import style from '../css/general.css'
 import _ from 'lodash'
 class TaskArea extends React.Component {
@@ -29,7 +35,7 @@ class TaskArea extends React.Component {
 	}
 
 	render() {
-        const {tasks, users} = this.props
+        const {tasks, users, groups} = this.props
 	    const allIds = Object.keys(tasks.byId)
         const {selectedTaskId} = this.state
         const selectedTask = tasks.byId[selectedTaskId]
@@ -47,7 +53,7 @@ class TaskArea extends React.Component {
                         <TaskFilterPanel/>
                     </div>
                     <div className="row">
-                        <TaskList list={tasks.byId} users={users} taskSelect={(id) => {
+                        <TaskList list={tasks.byId} users={users} groups={groups} taskSelect={(id) => {
                             this.selectTask(id)
                         }}/>
                     </div>
@@ -61,7 +67,7 @@ class TaskArea extends React.Component {
         )
 	}
 }
-function receivedSentFilter(filterValue, userId, tasks) {
+function applyReceivedSentFilter(filterValue, userId, tasks) {
     switch (filterValue) {
         case 'SENT':
             return {
@@ -79,12 +85,59 @@ function receivedSentFilter(filterValue, userId, tasks) {
             return tasks
     }
 }
-const mapProp = (state) => {
-	let taskData = state.tasks;
-	let taskFilter = state.filters.tasks;
-	const tasks = receivedSentFilter(taskFilter.receivedSentFilter, state.authentication.loggedInUserId, taskData)
-    const users = state.users
+function applySenderGroupFilter(tasks, filterValue) {
+    if (!filterValue || filterValue === SENDER_GROUP_FILTER.ALL) {
+        return tasks
+    } else {
+        return {
+            byId: _.pickBy(tasks.byId, (task => (task.senderGroup === filterValue)))
+        }
+    }
+}
 
-	return {tasks, users}
+function applySenderFilter(tasks, filterValue, senderId) {
+    switch (filterValue) {
+        case SENDER_FILTER.ME:
+            return {
+                byId: _.pickBy(tasks.byId, task => (task.sender === senderId))
+            }
+        case SENDER_FILTER.OTHERS:
+            return {
+                byId: _.pickBy(tasks.byId, task => (task.sender !== senderId))
+            }
+        default:
+            return tasks
+    }
+}
+
+function applyRecipientGroupFilter(tasks, filterValue) {
+    if (!filterValue || filterValue === RECIPIENT_GROUP_FILTER.ALL) {
+        return tasks
+    } else {
+        return {
+            byId: _.pickBy(tasks.byId, (task => (task.recipientGroup === filterValue)))
+        }
+    }
+}
+
+const mapProp = (state) => {
+    const {users, groups} = state
+    const {loggedInUserId} = state.authentication
+
+	let taskData = state.tasks
+	let taskFilter = state.filters.tasks
+	let tasks = applyReceivedSentFilter(taskFilter.receivedSentFilter, loggedInUserId, taskData)
+
+    switch (taskFilter.receivedSentFilter) {
+        case RECEIVED_SENT_FILTER.RECEIVED:
+            tasks = applySenderGroupFilter(tasks, taskFilter.senderGroupFilter)
+            break
+        case RECEIVED_SENT_FILTER.SENT:
+            tasks = applyRecipientGroupFilter(tasks, taskFilter.recipientGroupFilter)
+            tasks = applySenderFilter(tasks, taskFilter.senderFilter, loggedInUserId)
+            break
+    }
+
+	return {tasks, users, groups}
 }
 export default connect(mapProp)(TaskArea)
