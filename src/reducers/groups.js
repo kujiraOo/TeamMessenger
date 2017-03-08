@@ -6,14 +6,21 @@ const initialState = {
     selectedGroupDetails: null
 }
 
+function updateGroups(currentGroups, receivedGroups) {
+    const updatedGroups = {}
+    Object.values(receivedGroups).forEach(receivedGroup => {
+        const currentGroup = currentGroups[receivedGroup.id]
+        const updatedGroup = {...currentGroup, ...receivedGroup}
+        updatedGroups[receivedGroup.id] = updatedGroup
+    })
+    return updatedGroups
+}
+
 const byId = (state = initialState.byId, action) => {
 
     switch (action.type) {
         case UPDATE_GROUPS:
-            return {
-                ...state,
-                ...action.groups
-            }
+            return {...state, ...updateGroups(state, action.groups)}
         default:
             return state
     }

@@ -2,7 +2,7 @@ import * as loginActions from './LoginActions'
 import * as issueActions from './issueactions'
 import * as taskActions from './TaskActions'
 import * as groupanduseraction from './groupanduseraction'
-import * as filterActions from './filterAction'
+import * as filterActions from './FilterActions'
 const actions = {
 	loginActions,
 	issueActions,

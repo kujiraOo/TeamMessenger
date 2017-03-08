@@ -6,13 +6,23 @@ const initialState = {
     selectedUserDetails: null
 }
 
+function updateUsers(currentUsers, receivedUsers) {
+    const updatedUsers = {}
+    Object.values(receivedUsers).forEach(receivedUser => {
+        const currentUser = currentUsers[receivedUser.id]
+        const updatedUser = {...currentUser, ...receivedUser}
+        updatedUsers[receivedUser.id] = updatedUser
+    })
+    return updatedUsers
+}
+
 const byId = (state = initialState.byId, action) => {
 
     switch (action.type) {
         case UPDATE_USERS:
             return {
                 ...state,
-                ...action.users
+                ...updateUsers(state, action.users)
             }
         default:
             return state

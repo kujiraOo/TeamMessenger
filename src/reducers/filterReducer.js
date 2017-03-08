@@ -1,16 +1,38 @@
-import {viewBy} from '../actions/filterAction'
+import {
+    SET_RECEIVED_SENT_FILTER,
+    SET_RECIPIENT_GROUP_FILTER,
+    SET_SENDER_GROUP_FILTER,
+    SET_SENDER_FILTER
+} from '../constants/ActionTypes'
+import {
+    RECIPIENT_GROUP_FILTER,
+    SENDER_FILTER,
+    SENDER_GROUP_FILTER,
+    RECEIVED_SENT_FILTER
+} from '../constants/taskFilterConstants'
 import {combineReducers} from 'redux'
-import {updateObject, createReducer} from './helper'
-const updateState = (state, action) => {
-	if (state.bySource == action.type) //TOGGLE OFF
-		return updateObject(state, {bySource: 'VIEW_ALL'})
-	else return updateObject(state, {bySource: action.type})
+
+const initialTaskFilterState = {
+	receivedSentFilter: 'RECEIVED',
+	senderGroupFilter: 'ALL',
+	recipientGroupFilter: 'ALL',
+	senderFilter: SENDER_FILTER.ME
 }
-const initialState = {bySource: "VIEW_ALL"}
-const tasks = createReducer(initialState, {
-	'VIEW_SENT': updateState,
-	'VIEW_RECEIVED': updateState,
-	'VIEW_ALL': updateState,
-})
+
+const tasks = (state = initialTaskFilterState, action) => {
+	switch (action.type) {
+		case SET_RECEIVED_SENT_FILTER:
+			return {...state, receivedSentFilter: action.filterValue}
+		case SET_SENDER_GROUP_FILTER:
+            return {...state, senderGroupFilter: action.filterValue}
+        case SET_RECIPIENT_GROUP_FILTER:
+            return {...state, recipientGroupFilter: action.filterValue}
+        case SET_SENDER_FILTER:
+            return {...state, senderFilter: action.filterValue}
+        default:
+			return state
+	}
+}
+
 const filters = combineReducers({tasks})
 export default filters
