@@ -81,4 +81,6 @@ div.col-sm-12.col-md-2.col-lg-2.sidebar {
     padding: 5px;
     margin-left: 15px;
 }
-
+.item-in-list {
+    margin-left: 10%;
+}
