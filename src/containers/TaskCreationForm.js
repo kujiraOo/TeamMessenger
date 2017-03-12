@@ -1,5 +1,14 @@
 import React from 'react'
-import {ControlLabel, FormControl, Button, Checkbox, ListGroupItem} from 'react-bootstrap'
+import {
+    ControlLabel, 
+    FormControl, 
+    Button, 
+    Checkbox, 
+    ListGroupItem, 
+    FormGroup, 
+    HelpBlock,
+    Modal
+} from 'react-bootstrap'
 import moment from 'moment'
 import {connect} from 'react-redux'
 import {getSubordinateGroups} from '../reducers/rootReducer'
@@ -7,12 +16,15 @@ import OptionsFilter from '../components/shared/OptionsFilter'
 import {displayGroupDetails} from '../actions/GroupActions'
 import {createTask} from '../actions/TaskActions'
 import _ from 'lodash'
-
+import FontAwesome from 'react-fontawesome'
 class TaskCreationForm extends React.Component {
     constructor(props) {
         super(props)
 
         this.state = {
+            isValid: undefined,
+            showModal: false,
+            modalContent: '',
             description: '',
             title: '',
             senderGroup: null,
@@ -21,26 +33,39 @@ class TaskCreationForm extends React.Component {
             deadline: moment().format('YYYY-MM-DDThh:mm')
         }
     }
-
+    validateForm() {
+        let title = (this.state.title > 1)
+        let date = (moment(this.state.deadline) > moment())
+        let recipients = (this.state.recipients.length > 1)
+        return (title && date && recipients)
+    }
+    close() {
+        this.setState({showModal: false})
+    }
     onSendTaskButtonClicked() {
         const {dispatch, groups, loggedInUserId} = this.props
         const recipientGroup = groups.byId[this.state.recipientGroup]
-
+        if (this.validateForm()) {
+            this.setState({modalContent: 'Operation failed. Please revise the information you provided and try again later', showModal: true})
+            return;
+        }
         dispatch(createTask({
             ...this.state,
             senderGroup: recipientGroup.managerGroup,
             sender: loggedInUserId,
             deadline: moment(this.state.deadline).format()
         }))
+        this.setState({modalContent: 'Successfully created new task', showModal: true})
     }
 
-    renderTextInput(label, key, value, type = 'text') {
+    renderTextInput(label, key, value, type = 'text') { //why dont you use this with description field also?
         const placeHolder = 'Enter new ' + label.toLowerCase()
 
         return (
-            <div>
+            <FormGroup validationState={(this.state.title < 1) ? "error" : null}>
                 <ControlLabel>{label}</ControlLabel>
                 <FormControl
+
                     type={type}
                     value={value}
                     placeholder={placeHolder}
@@ -48,7 +73,10 @@ class TaskCreationForm extends React.Component {
                         [key]: e.target.value
                     })}
                 />
-            </div>
+              <FormControl.Feedback>
+              <span><FontAwesome name='warning'/></span>
+              </FormControl.Feedback>
+            </FormGroup>
         )
     }
 
@@ -72,7 +100,7 @@ class TaskCreationForm extends React.Component {
         }
     }
 
-    renderRecipients() {
+    renderRecipients() { //Recommending reusing the component that you used to show user list in ManagementArea
         const recipientGroupId = this.state.recipientGroup
 
         if (!recipientGroupId) {
@@ -106,25 +134,39 @@ class TaskCreationForm extends React.Component {
 
         return (
             <div>
+                <Modal show={this.state.showModal} onHide={this.close}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Create Task status</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                    <p>{this.state.modalContent}</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={() => this.close()}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
                 <h3>New task</h3>
                 {this.renderTextInput('Title', 'title', title)}
                 <br/>
-
-                <ControlLabel>Description</ControlLabel>
-                <FormControl
-                    componentClass="textarea"
-                    value={description}
-                    placeholder="Enter description for the task"
-                    onChange={e => this.setState({
-                        description: e.target.value
-                    })}
-                />
+                <FormGroup>
+                    <ControlLabel>Description</ControlLabel>
+                    <FormControl
+                        componentClass="textarea"
+                        value={description}
+                        placeholder="Enter description for the task"
+                        onChange={e => this.setState({
+                            description: e.target.value
+                        })}
+                    />
+                 
+                </FormGroup>
                 <br/>
-
+                <FormGroup validationState={(moment(this.state.deadline) < moment()) ? 'error' : null}>
                 <ControlLabel>Deadline</ControlLabel>
                 <FormControl type="datetime-local" value={deadline} onChange={e => this.setState({
                     deadline: moment(e.target.value).format('YYYY-MM-DDThh:mm')
                 })}/>
+                </FormGroup>
                 <br/>
                 <br/>
 
