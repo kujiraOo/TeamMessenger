@@ -18,10 +18,10 @@ class TaskArea extends React.Component {
         super(props)
         this.state = {
             selectedTaskId: undefined,
-            createNewTaskSelected: false
+            createNewTaskSelected: false,
+            modifyTaskSelected: false,
         }
     }
-
     componentDidMount() {
         let {fetchTasks} = actions.taskActions
         let {dispatch} = this.props
@@ -31,7 +31,8 @@ class TaskArea extends React.Component {
     selectTask(selectedTaskId) {
         this.setState({
             selectedTaskId,
-            createNewTaskSelected: false
+            createNewTaskSelected: false,
+            modifyTaskSelected: false
         })
     }
 
@@ -46,10 +47,15 @@ class TaskArea extends React.Component {
             createNewTaskSelected: true
         })
     }
-
+    deleteTask() {
+        alert("Task deletion invoked")
+    }
+    modifyTask() {
+        this.setState({modifyTaskSelected: true})
+    }
     render() {
         const {tasks, users, groups} = this.props
-        const {selectedTaskId, createNewTaskSelected} = this.state
+        const {selectedTaskId, createNewTaskSelected, modifyTaskSelected} = this.state
         const selectedTask = tasks.byId[selectedTaskId]
 
         let selectedTaskSender, selectedTaskSenderName
@@ -85,10 +91,14 @@ class TaskArea extends React.Component {
                         entity={selectedTask} senderName={selectedTaskSenderName}
                         requestTaskDetail={() => {
                             this.requestTaskDetail
-                        }}/>}
-                    {createNewTaskSelected &&
+                        }}
+                        deleteTask={()=> this.deleteTask()}
+                        modifyTask={()=> this.modifyTask()}
+                        control={this.props.filter}
+                        />}
+                    {(createNewTaskSelected || modifyTaskSelected) &&
                     <Panel>
-                        <TaskCreationForm/>
+                        <TaskCreationForm entity={tasks.byId[this.state.selectedTaskId]} mode={(createNewTaskSelected) ? 'create' : 'modify'}/>
                     </Panel>
                     }
                 </div>
@@ -167,6 +177,6 @@ const mapProp = (state) => {
             break
     }
 
-    return {tasks, users, groups}
+    return {tasks, users, groups, filter: taskFilter}
 }
 export default connect(mapProp)(TaskArea)

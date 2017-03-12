@@ -91,7 +91,7 @@ class ButtonPanel extends React.Component {
                     <br/>
                     {(receivedSentFilter === RECEIVED_SENT_FILTER.RECEIVED) &&
                     <OptionsFilter
-                        label="from group"
+                        label="From GROUP"
                         value={senderGroupFilter}
                         options={this.senderGroupFilterOptions()}
                         onChange={(filterValue) => this.handleSenderGroupSelection(filterValue)}
@@ -99,13 +99,13 @@ class ButtonPanel extends React.Component {
                     {(receivedSentFilter === RECEIVED_SENT_FILTER.SENT) &&
                     <div>
                         <OptionsFilter
-                            label="sent by"
+                            label="Sent by"
                             value={senderFilter}
                             options={this.senderFilterOptions()}
                             onChange={filterValue => this.handleSenderSelection(filterValue)}
                         />
                         <OptionsFilter
-                            label="to group"
+                            label="To group"
                             value={recipientGroupFilter}
                             options={this.recipientGroupFilterOptions()}
                             onChange={filterValue => this.handleRecipientGroupSelection(filterValue)}
