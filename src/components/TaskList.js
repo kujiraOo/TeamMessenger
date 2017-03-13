@@ -58,7 +58,7 @@ export default class TaskList extends React.Component {
             )
 		})
 		return (
-			<div>
+			<div className="scrollable">
 				<ListGroup>
 				{items}
 				</ListGroup>
