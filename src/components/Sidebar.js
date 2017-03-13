@@ -28,36 +28,41 @@ class Sidebar extends React.Component {
 
     render() {
         return (this.props.userStatus === HR_USER) ? (
-                <Nav pullLeft bsStyle="pills" stacked onSelect={this.handleNavigation}>
-                    <NavItem eventKey="task">
-                        {renderIcon('bars')}
-                        Task Viewer
-                    </NavItem >
-                    <NavItem eventKey="issue">
-                        {renderIcon('exclamation-triangle')}
-                        Issue Viewer
-                    </NavItem>
-                    <NavItem eventKey="group-management">
-                        {renderIcon('users')}
-                        Group Management
-                    </NavItem >
-                    <NavItem eventKey="user-management">
-                        {renderIcon('user')}
-                        User Management</NavItem>
-                </Nav>
+                <div className="length-entire-viewport">
+                    <Nav bsStyle="pills" stacked onSelect={this.handleNavigation}>
+                        <NavItem eventKey="task">
+                            {renderIcon('bars')}
+                            Task Viewer
+                        </NavItem>
+                        <NavItem eventKey="issue">
+                            {renderIcon('exclamation-triangle')}
+                            Issue Viewer
+                        </NavItem>
+                        <NavItem eventKey="group-management">
+                            {renderIcon('users')}
+                            Group Management
+                        </NavItem>
+                        <NavItem eventKey="user-management">
+                            {renderIcon('user')}
+                            User Management
+                        </NavItem>
+                    </Nav>
+                </div>
             ) : (
-                <Nav pullLeft={true}
-                     stacked={true}
-                     onSelect={this.handleNavigation}>
-                    <NavItem eventKey="task">
-                        {renderIcon('bars')}
-                        Task Viewer
-                    </NavItem>
-                    <NavItem eventKey="issue">
-                        {renderIcon('exclamation-triangle')}
-                        Issue Viewer
-                    </NavItem>
-                </Nav>
+                <div className="length-entire-viewport">
+                    <Nav 
+                         stacked={true}
+                         onSelect={this.handleNavigation}>
+                        <NavItem eventKey="task">
+                            {renderIcon('bars')}
+                            Task Viewer
+                        </NavItem>
+                        <NavItem eventKey="issue">
+                            {renderIcon('exclamation-triangle')}
+                            Issue Viewer
+                        </NavItem>
+                    </Nav>
+                </div>
             )
     }
 }
