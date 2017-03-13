@@ -34,3 +34,9 @@ export function post(url, options) {
 
     return fetchJson(({url, auth, method: 'POST', body}))
 }
+
+export function del(url, options) {
+    const {auth} = options
+
+    return fetchJson({url, auth, method: 'DELETE'})
+}
