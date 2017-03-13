@@ -10,3 +10,7 @@ body {
 .item-in-list: {
 	margin: 100px;
 }
+.scrollable {
+	overflow-y: scroll;
+	height: 68vh;
+}
