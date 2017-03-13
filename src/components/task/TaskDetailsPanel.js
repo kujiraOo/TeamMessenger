@@ -11,6 +11,7 @@ export default class DetailPanel extends React.Component {
         this.props.requestTaskDetail()
     }
     renderFooter() {
+        if (!this.props.entity) return null
         return (<ButtonToolbar>
                     {
                         (this.props.control.receivedSentFilter == 'SENT') && 
@@ -36,7 +37,11 @@ export default class DetailPanel extends React.Component {
                                <p>{entity.content}</p>
                            </div>
                        ) : (
-                           <h3>Nothing to display</h3>
+                           <div>
+                               <h3>Welcome to your task viewing screen</h3>
+                               <p>Click the task item in the left and see its full details here.</p>
+                               <p>If the task is sent by you, you can edit, or modify it. If not, you can only edit your task</p>
+                           </div>
                        )}
            </Panel>
         )
