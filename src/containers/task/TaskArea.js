@@ -1,17 +1,17 @@
 import React from 'react'
 import {ListGroupItem, Panel} from 'react-bootstrap'
-import TaskList from '../components/TaskList'
-import TaskDetailsPanel from '../components/task/TaskDetailsPanel'
-import TaskFilterPanel from '../components/task/TaskFilterPanel'
+import TaskList from '../../components/TaskList'
+import TaskDetailsPanel from '../../components/task/TaskDetailsPanel'
+import TaskFilterPanel from '../../components/task/TaskFilterPanel'
 import TaskCreationForm from './TaskCreationForm'
 import {connect} from 'react-redux'
-import actions from '../actions/index'
+import actions from '../../actions/index'
 import {
     RECIPIENT_GROUP_FILTER,
     SENDER_FILTER,
     SENDER_GROUP_FILTER,
     RECEIVED_SENT_FILTER
-} from '../constants/taskFilterConstants'
+} from '../../constants/taskFilterConstants'
 import _ from 'lodash'
 class TaskArea extends React.Component {
     constructor(props) {
