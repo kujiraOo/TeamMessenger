@@ -2,16 +2,18 @@ import React from 'react'
 import style from '../css/general.css'
 import {Panel, ListGroup, ListGroupItem} from 'react-bootstrap'
 import _ from 'lodash'
-
+import FontAwesome from 'react-fontawesome'
+import moment from 'moment'
 function Item(props) {
     let {task, senderName, recipientNames, senderGroupName, recipientGroupName} = props
 
     return (
-		<div>
-			<p>{task.title}</p>
-			<p>{senderName} > {recipientNames}</p>
-			<p>{senderGroupName} > {recipientGroupName}</p>
-			<p>Deadline: {task.deadline}</p>
+		<div className="item-in-list">
+			<h4 className="text-left"><strong>{task.title}</strong></h4>
+			<ul className="list-unstyled">
+				<li><FontAwesome name="user" size="lg"/> {senderName}</li>
+				<li><FontAwesome name="clock-o" size="lg"/> {moment(task.deadline).calendar()}</li>
+			</ul>
 		</div>
     )
 }
