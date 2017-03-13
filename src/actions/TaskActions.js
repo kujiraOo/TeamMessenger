@@ -1,5 +1,4 @@
-import {get, post} from '../api/fetch'
-import {requestOperation, responseFromServer, responseToRequest, checkStatus} from './helper'
+import {get, post, del} from '../api/fetch'
 import {
     FETCH_TASKS_SUCCESS,
     FETCH_TASKS_REQUEST,
@@ -7,7 +6,11 @@ import {
     FETCH_TASKS_FAILURE,
     FETCH_TASK_FAILURE,
     FETCH_TASK_SUCCESS,
-    FETCH_TASK_REQUEST
+    FETCH_TASK_REQUEST,
+    DELETE_TASK_FAILURE,
+    DELETE_TASK_REQUEST,
+    DELETE_TASK_SUCCESS,
+    DELETE_TASK
 } from '../constants/ActionTypes'
 import {updateUsers} from './UserActions'
 import {updateGroups} from './GroupActions'
@@ -59,10 +62,37 @@ function fetchTaskFailure(statusCode) {
     }
 }
 
+function deleteTaskRequest() {
+    return {
+        type: DELETE_TASK_REQUEST
+    }
+}
+
+function deleteTaskSuccess(statusCode) {
+    return {
+        type: DELETE_TASK_SUCCESS,
+        statusCode
+    }
+}
+
+function deleteTaskFailure(statusCode) {
+    return {
+        type: DELETE_TASK_FAILURE,
+        statusCode
+    }
+}
+
 function receiveTasks(tasks) {
     return {
         type: RECEIVE_TASKS,
         tasks
+    }
+}
+
+function deleteTaskFromStore(taskId) {
+    return {
+        type: DELETE_TASK,
+        taskId
     }
 }
 
@@ -124,6 +154,24 @@ export function createTask(task) {
             })
     }
 }
+
+export function deleteTask(taskId) {
+    return (dispatch) => {
+
+        dispatch(deleteTaskRequest())
+
+        return del('/tasks/' + taskId, {auth: getLoggedInUserId()})
+            .then(res => {
+                dispatch(deleteTaskSuccess(res.status))
+                return res.json()
+            })
+            .then(taskData => {
+                const taskId = taskData.id
+                dispatch(deleteTaskFromStore(taskId))
+            })
+    }
+}
+
 
 // export function fetchTaskDetail(id, userId) {
 // 	return (dispatch) => {
