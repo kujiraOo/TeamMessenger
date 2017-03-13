@@ -7,8 +7,8 @@ body {
     font-family: Merriweather, 'Helvetica Neue', Arial, sans-serif;
     webkit-tap-highlight-color: #222
 }
-.item-in-list: {
-	margin: 100px;
+button.list-group-item {
+    padding-left: 10%;
 }
 .scrollable {
 	overflow-y: scroll;

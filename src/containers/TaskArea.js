@@ -35,7 +35,9 @@ class TaskArea extends React.Component {
             modifyTaskSelected: false
         })
     }
-
+    componentWillReceiveProps(nextProps) {
+        if (this.props.tasks.byId!== nextProps.tasks.byId) this.setState({modifyTaskSelected: false});
+    }
     requestTaskDetail() {
         let {dispatch} = this.props
         let {fetchTaskDetail} = actions.taskActions
