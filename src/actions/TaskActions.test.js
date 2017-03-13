@@ -1,7 +1,7 @@
 import * as types from '../constants/ActionTypes'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fetchTasks, fetchTask} from './TaskActions'
+import {fetchTasks, fetchTask, deleteTask} from './TaskActions'
 import {normalize} from 'normalizr'
 import {task as taskSchema} from '../api/schemas'
 import fetchMock from 'fetch-mock'
@@ -354,16 +354,16 @@ describe('Actions: TaskActions', () => {
                         statusCode: 200
                     },
                     {
-                        type: 'RECEIVE_TASKS',
-                        tasks: normalize(tasksData, [taskSchema]).entities.tasks
-                    },
-                    {
                         type: 'UPDATE_GROUPS',
                         groups: normalize(tasksData, [taskSchema]).entities.groups
                     },
                     {
                         type: 'UPDATE_USERS',
                         users: normalize(tasksData, [taskSchema]).entities.users
+                    },
+                    {
+                        type: 'RECEIVE_TASKS',
+                        tasks: normalize(tasksData, [taskSchema]).entities.tasks
                     }
                 ]
 
@@ -458,16 +458,16 @@ describe('Actions: TaskActions', () => {
                         statusCode: 200
                     },
                     {
-                        type: 'RECEIVE_TASKS',
-                        tasks: normalize(taskData, taskSchema).entities.tasks
-                    },
-                    {
                         type: 'UPDATE_GROUPS',
                         groups: normalize(taskData, taskSchema).entities.groups
                     },
                     {
                         type: 'UPDATE_USERS',
                         users: normalize(taskData, taskSchema).entities.users
+                    },
+                    {
+                        type: 'RECEIVE_TASKS',
+                        tasks: normalize(taskData, taskSchema).entities.tasks
                     }
                 ]
 
@@ -477,30 +477,65 @@ describe('Actions: TaskActions', () => {
                     })
             })
         })
+    })
 
-        // describe('Fetching from GET /tasks failure', () => {
-        //
-        //     fetchMock.getOnce('/tasks', {status: 403})
-        //
-        //     it('should dispatch failure actions', () => {
-        //
-        //         const store = mockStore({})
-        //
-        //         const expectedActions = [
-        //             {
-        //                 type: 'FETCH_TASKS_REQUEST'
-        //             },
-        //             {
-        //                 type: 'FETCH_TASKS_FAILURE',
-        //                 statusCode: 403
-        //             }
-        //         ]
-        //
-        //         return store.dispatch(fetchTasks())
-        //             .then(() => {
-        //                 expect(store.getActions()).toEqual(expectedActions)
-        //             })
-        //     })
-        // })
+    describe('Deleting task', () => {
+
+
+        describe('Upon successful deletion', () => {
+
+            const deletedTaskData = {
+                "content": "Please report progress of your moring shift",
+                "created": "2017-03-06T16:02:47+02:00",
+                "deadline": "2017-11-05T08:15:30+02:00",
+                "id": 6,
+                "recipientGroup": {
+                    "id": 2,
+                    "name": "Raw Material Operator",
+                    "status": "ACTIVE"
+                },
+                "recipients": [],
+                "sender": {
+                    "firstName": "Arseni",
+                    "id": 3,
+                    "lastName": "Kurilov",
+                    "status": "ACTIVE",
+                    "userName": "arseniKu"
+                },
+                "senderGroup": {
+                    "id": 1,
+                    "name": "Salad Line Manager",
+                    "status": "ACTIVE"
+                },
+                "status": "IN_PROGRESS",
+                "title": "Report progress"
+            }
+
+            fetchMock.deleteOnce('/tasks/6', {body: deletedTaskData})
+
+            it('should dispatch appropriate actions to the store', () => {
+
+                const store = mockStore({})
+
+                const expectedActions = [
+                    {
+                        type: 'DELETE_TASK_REQUEST'
+                    },
+                    {
+                        type: 'DELETE_TASK_SUCCESS',
+                        statusCode: 200
+                    },
+                    {
+                        type: 'DELETE_TASK',
+                        taskId: 6
+                    }
+                ]
+
+                return store.dispatch(deleteTask(6))
+                    .then(() => {
+                        expect(store.getActions()).toEqual(expectedActions)
+                    })
+            })
+        })
     })
 })
