@@ -20,7 +20,17 @@ import FontAwesome from 'react-fontawesome'
 class TaskCreationForm extends React.Component {
     constructor(props) {
         super(props)
-
+        if (props.mode=='modify')
+            this.state = {
+                isValid: true,
+                showModal: false,
+                description: props.entity.content,
+                title: props.entity.title,
+                recipientGroup: props.entity.recipientGroup,
+                recipients: props.entity.recipients,
+                deadline: moment(props.entity.deadline).format('YYYY-MM-DDThh:mm')
+            }
+        else
         this.state = {
             isValid: undefined,
             showModal: false,
@@ -34,9 +44,9 @@ class TaskCreationForm extends React.Component {
         }
     }
     validateForm() {
-        let title = (this.state.title > 1)
+        let title = (this.state.title.length > 1)
         let date = (moment(this.state.deadline) > moment())
-        let recipients = (this.state.recipients.length > 1)
+        let recipients = (this.state.recipients.length > 0)
         return (title && date && recipients)
     }
     close() {
@@ -45,10 +55,16 @@ class TaskCreationForm extends React.Component {
     onSendTaskButtonClicked() {
         const {dispatch, groups, loggedInUserId} = this.props
         const recipientGroup = groups.byId[this.state.recipientGroup]
-        if (this.validateForm()) {
+        if (!this.validateForm()) {
+            console.log(this.validateForm())
             this.setState({modalContent: 'Operation failed. Please revise the information you provided and try again later', showModal: true})
             return;
         }
+        if (this.props.mode == 'modify') {
+            //call modify code here
+            alert("Modify code called")
+        }
+        //else call create code
         dispatch(createTask({
             ...this.state,
             senderGroup: recipientGroup.managerGroup,
@@ -135,7 +151,7 @@ class TaskCreationForm extends React.Component {
         return (
             <div>
                 <Modal show={this.state.showModal} onHide={this.close}>
-                    <Modal.Header closeButton>
+                    <Modal.Header>
                         <Modal.Title>Create Task status</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
@@ -145,7 +161,7 @@ class TaskCreationForm extends React.Component {
                         <Button onClick={() => this.close()}>Close</Button>
                     </Modal.Footer>
                 </Modal>
-                <h3>New task</h3>
+                {(this.props.mode == 'create') ? <h3>New task</h3> : <h3>Modify task</h3>}
                 {this.renderTextInput('Title', 'title', title)}
                 <br/>
                 <FormGroup>
@@ -169,7 +185,7 @@ class TaskCreationForm extends React.Component {
                 </FormGroup>
                 <br/>
                 <br/>
-
+                {(this.props.mode == 'modify') && <p>Status: {this.props.entity.status}</p>}
                 <div className="row">
                     <OptionsFilter
                         label="Select group"
@@ -185,9 +201,7 @@ class TaskCreationForm extends React.Component {
                         }}
                     />
                 </div>
-
                 <br/>
-
                 <div className="row">
                     {recipientGroup && this.renderRecipients()}
                 </div>

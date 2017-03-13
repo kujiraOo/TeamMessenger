@@ -1,5 +1,6 @@
 import React from 'react'
-import {Well} from 'react-bootstrap'
+import {Well, ButtonToolbar, ButtonGroup, Button, Panel} from 'react-bootstrap'
+import moment from 'moment'
 
 export default class DetailPanel extends React.Component {
     constructor(props) {
@@ -9,23 +10,35 @@ export default class DetailPanel extends React.Component {
     componentWillUpdate() {
         this.props.requestTaskDetail()
     }
-
+    renderFooter() {
+        return (<ButtonToolbar>
+                    {
+                        (this.props.control.receivedSentFilter == 'SENT') && 
+                        <ButtonGroup>
+                            <Button onClick={this.props.deleteTask}>Delete this task</Button>
+                            <Button onClick={this.props.modifyTask}>Modify this Task</Button>
+                        </ButtonGroup>
+                        }
+                   <ButtonGroup>
+                        <Button onClick={this.props.modifyTask}>Mark as complete</Button>
+                   </ButtonGroup>
+               </ButtonToolbar>)
+    }
     render() {
         const {entity, senderName} = this.props
         return (
-            <Well>
-                {entity ? (
-                        <div>
-                            <h3>Detailed Task Information</h3>
-                            <h2>{entity.title}</h2>
-                            <p>From: {senderName}</p>
-                            <p>Due at: {entity.deadline}</p>
-                            <p>{entity.content}</p>
-                        </div>
-                    ) : (
-                        <h3>Nothing to display</h3>
-                    )}
-            </Well>
+           <Panel footer={this.renderFooter()}>
+                   {entity ? ( 
+                           <div>
+                               <h2>{entity.title}</h2>
+                               <p>From: {senderName}</p>
+                               <p>Due {moment(entity.deadline).calendar()}</p>
+                               <p>{entity.content}</p>
+                           </div>
+                       ) : (
+                           <h3>Nothing to display</h3>
+                       )}
+           </Panel>
         )
     }
 }
