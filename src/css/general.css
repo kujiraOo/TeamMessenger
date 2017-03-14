@@ -84,3 +84,8 @@ div.col-sm-12.col-md-2.col-lg-2.sidebar {
 .item-in-list {
     margin-left: 10%;
 }
+
+select.form-control.form-control-sm{
+
+    max-width: 80%;
+}
