@@ -4,7 +4,7 @@ div.row div.list-group button.list-group-item {
 }
 
 div.row div.list-group button.list-group-item:focus {
-    background-color: #009688;
+    background-color: #F05F40;
     color: white;
 }
 
@@ -13,7 +13,7 @@ ul.pull-left li a {
 }
 
 ul.pull-left li a:focus {
-    background-color: #009688;
+    background-color: #F05F40;
     color: white;
 }
 
@@ -89,3 +89,4 @@ select.form-control.form-control-sm{
 
     max-width: 80%;
 }
+
