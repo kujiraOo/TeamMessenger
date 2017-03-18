@@ -48,7 +48,11 @@ export function fetchLoginData(loginData) { //action when dispatched will also c
                 const normalizedData = normalize(authData, userSchema)
                 const {users, groups} = normalizedData.entities
                 dispatch(updateUsers(users))
-                dispatch(updateGroups(groups))
+
+                if (groups) {
+                    dispatch(updateGroups(groups))
+                }
+
                 dispatch(redirect('/workspace'))
             })
             .catch((error) => {

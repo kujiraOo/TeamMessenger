@@ -105,10 +105,12 @@ export function fetchTasks() { //thunk to call api to fetch task list
                 return res.json()
             })
             .then(tasksData => {
-                const normalizedData = normalize(tasksData, [taskSchema])
-                dispatch(updateGroups(normalizedData.entities.groups))
-                dispatch(updateUsers(normalizedData.entities.users))
-                dispatch(receiveTasks(normalizedData.entities.tasks))
+                if (tasksData.length > 0) {
+                    const normalizedData = normalize(tasksData, [taskSchema])
+                    dispatch(updateGroups(normalizedData.entities.groups))
+                    dispatch(updateUsers(normalizedData.entities.users))
+                    dispatch(receiveTasks(normalizedData.entities.tasks))
+                }
             })
             .catch(err => {
                 dispatch(fetchTasksFailure(err.response.status))
@@ -125,10 +127,12 @@ export function fetchTask(taskId) { //thunk to call api to fetch task list
                 return res.json()
             })
             .then(taskData => {
-                const normalizedData = normalize(taskData, taskSchema)
-                dispatch(updateGroups(normalizedData.entities.groups))
-                dispatch(updateUsers(normalizedData.entities.users))
-                dispatch(receiveTasks(normalizedData.entities.tasks))
+                if (taskData.length > 0) {
+                    const normalizedData = normalize(taskData, taskSchema)
+                    dispatch(updateGroups(normalizedData.entities.groups))
+                    dispatch(updateUsers(normalizedData.entities.users))
+                    dispatch(receiveTasks(normalizedData.entities.tasks))
+                }
             })
             .catch(err => {
                 dispatch(fetchTaskFailure(err.response.status))
@@ -144,10 +148,12 @@ export function createTask(task) {
                 return res.json()
             })
             .then(taskData => {
-                const normalizedData = normalize(taskData, taskSchema)
-                dispatch(updateGroups(normalizedData.entities.groups))
-                dispatch(updateUsers(normalizedData.entities.users))
-                dispatch(receiveTasks(normalizedData.entities.tasks))
+                if (taskData.length > 0) {
+                    const normalizedData = normalize(taskData, taskSchema)
+                    dispatch(updateGroups(normalizedData.entities.groups))
+                    dispatch(updateUsers(normalizedData.entities.users))
+                    dispatch(receiveTasks(normalizedData.entities.tasks))
+                }
             })
             .catch(err => {
                 dispatch(fetchTaskFailure(err.response.status))

@@ -58,8 +58,12 @@ export function displayUserDetails(userId) {
             .then(res => res.json())
             .then(json => {
                 const data = normalize(json, userSchema)
-                dispatch(updateUsers(data.entities.users))
-                dispatch(updateGroups(data.entities.groups))
+
+                const {users, groups} = data.entities
+                dispatch(updateUsers(users))
+                if (groups) {
+                    dispatch(updateGroups(groups))
+                }
                 dispatch(selectUserDetails(userId))
             })
             // .catch(ex => dispatch(fetchGroupItemsFailure(ex)))
