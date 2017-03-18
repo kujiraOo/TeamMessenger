@@ -43,6 +43,12 @@ class TaskCreationForm extends React.Component {
             deadline: moment().format('YYYY-MM-DDThh:mm')
         }
     }
+
+    componentWillMount() {
+        const recipientGroupOptions = this.recipientGroupOptions()
+        this.handleRecipientGroupSelection(recipientGroupOptions[1].value)
+    }
+
     validateForm() {
         let title = (this.state.title.length > 1)
         let date = (moment(this.state.deadline) > moment())
@@ -114,6 +120,16 @@ class TaskCreationForm extends React.Component {
                 recipients: [...recipients, recipientId]
             })
         }
+    }
+
+    handleRecipientGroupSelection(filterValue) {
+        const {dispatch} = this.props
+        filterValue = Number(filterValue)
+        dispatch(displayGroupDetails(filterValue))
+        this.setState({
+            recipientGroup: filterValue,
+            recipients: []
+        })
     }
 
     renderRecipients() { //Recommending reusing the component that you used to show user list in ManagementArea
@@ -190,15 +206,7 @@ class TaskCreationForm extends React.Component {
                     <OptionsFilter
                         label="Select group"
                         options={this.recipientGroupOptions()}
-                        onChange={filterValue => {
-                            const {dispatch} = this.props
-                            filterValue = Number(filterValue)
-                            dispatch(displayGroupDetails(filterValue))
-                            this.setState({
-                                recipientGroup: filterValue,
-                                recipients: []
-                            })
-                        }}
+                        onChange={filterValue => {this.handleRecipientGroupSelection(filterValue)}}
                     />
                 </div>
                 <br/>
