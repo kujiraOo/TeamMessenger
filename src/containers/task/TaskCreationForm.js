@@ -45,8 +45,10 @@ class TaskCreationForm extends React.Component {
     }
 
     componentWillMount() {
-        const recipientGroupOptions = this.recipientGroupOptions()
-        this.handleRecipientGroupSelection(recipientGroupOptions[1].value)
+        const firstRecipientGroupOption = this.recipientGroupOptions()[0]
+        if (firstRecipientGroupOption) {
+            this.handleRecipientGroupSelection(firstRecipientGroupOption.value)
+        }
     }
 
     validateForm() {
