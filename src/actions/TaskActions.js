@@ -148,12 +148,10 @@ export function createTask(task) {
                 return res.json()
             })
             .then(taskData => {
-                if (taskData.length > 0) {
-                    const normalizedData = normalize(taskData, taskSchema)
-                    dispatch(updateGroups(normalizedData.entities.groups))
-                    dispatch(updateUsers(normalizedData.entities.users))
-                    dispatch(receiveTasks(normalizedData.entities.tasks))
-                }
+                const normalizedData = normalize(taskData, taskSchema)
+                dispatch(updateGroups(normalizedData.entities.groups))
+                dispatch(updateUsers(normalizedData.entities.users))
+                dispatch(receiveTasks(normalizedData.entities.tasks))
             })
             .catch(err => {
                 dispatch(fetchTaskFailure(err.response.status))
